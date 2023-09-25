@@ -2,6 +2,7 @@ import '@mantine/core/styles.css';
 import { MantineProvider, createTheme } from '@mantine/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Start from './start';
+import Canvas from './canvas';
 
 const theme = createTheme({});
 
@@ -14,7 +15,7 @@ function App() {
             <Start />
           </Route>
           <Route path="/play">
-            <h1>about</h1>
+            <Canvas />
           </Route>
         </Switch>
       </Router>
