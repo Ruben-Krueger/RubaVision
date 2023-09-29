@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/RubaVision/static/css/main.416dbbae.css",
+    "main.js": "/RubaVision/static/js/main.ce8d9a5c.js",
+    "static/js/24.d6b2db88.chunk.js": "/RubaVision/static/js/24.d6b2db88.chunk.js",
+    "static/js/157.066b63ea.chunk.js": "/RubaVision/static/js/157.066b63ea.chunk.js",
+    "index.html": "/RubaVision/index.html",
+    "main.416dbbae.css.map": "/RubaVision/static/css/main.416dbbae.css.map",
+    "main.ce8d9a5c.js.map": "/RubaVision/static/js/main.ce8d9a5c.js.map",
+    "24.d6b2db88.chunk.js.map": "/RubaVision/static/js/24.d6b2db88.chunk.js.map",
+    "157.066b63ea.chunk.js.map": "/RubaVision/static/js/157.066b63ea.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.416dbbae.css",
+    "static/js/main.ce8d9a5c.js"
+  ]
+}
