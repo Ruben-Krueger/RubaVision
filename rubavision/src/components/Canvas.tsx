@@ -2,11 +2,13 @@ import init from '../lib/canvas';
 import React, { useEffect } from 'react';
 
 export default function Canvas(): JSX.Element {
-  init();
+  useEffect(() => {
+    init();
 
-  useEffect(() => () => {
-    document.getElementById('sketch')?.remove();
-  });
+    return () => {
+      document.getElementById('sketch')?.remove();
+    };
+  }, []);
 
   return <></>;
 }
