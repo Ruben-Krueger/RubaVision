@@ -20,7 +20,7 @@ export default function Start() {
 
   return !hasAccepted ? (
     <Modal
-      opened={true}
+      opened={hasAccepted}
       onClose={() => {}}
       title="But first! A small warning."
       centered
