@@ -1,6 +1,7 @@
-import { Button, Center, Text, Container, Flex } from '@mantine/core';
+import { Button, Center, Text, Container, Flex, Modal } from '@mantine/core';
 import { useHistory } from 'react-router-dom';
 import React from 'react';
+import { useLocalStorage } from '@mantine/hooks';
 
 const styles = {
   title: {},
@@ -8,7 +9,31 @@ const styles = {
 
 export default function Start() {
   const history = useHistory();
-  return (
+
+  // TODO: flashing because local storage waiting
+  const [accepted, setHasAccepted] = useLocalStorage({
+    key: 'accepted',
+    defaultValue: 'false',
+  });
+
+  const hasAccepted = JSON.parse(accepted) === true;
+
+  return !hasAccepted ? (
+    <Modal
+      opened={true}
+      onClose={() => {}}
+      title="But first! A small warning."
+      centered
+      withCloseButton={false}
+    >
+      <Text>
+        This software is for educational purposes. This software have not been
+        evaluated by the Food and Drug Administration, nor is it intended to
+        diagnose, treat, cure, or prevent any disease.
+      </Text>
+      <Button onClick={() => setHasAccepted('true')}>I accept</Button>
+    </Modal>
+  ) : (
     <Container>
       <Center>
         <Flex direction="column">
