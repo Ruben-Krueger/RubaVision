@@ -1,6 +1,7 @@
 {
   "name": "rubavision",
   "version": "0.1.0",
+  "homepage": "https://ruben-krueger.github.io/RubaVision",
   "private": true,
   "dependencies": {
     "@mantine/core": "^7.0.0",
@@ -19,6 +20,8 @@
     "typescript": "^5.2.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "web": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
@@ -48,6 +51,7 @@
     "eslint-plugin-n": "^16.1.0",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
+    "gh-pages": "^6.0.0",
     "postcss": "^8.4.30",
     "postcss-preset-mantine": "^1.7.0",
     "postcss-simple-vars": "^7.0.1"

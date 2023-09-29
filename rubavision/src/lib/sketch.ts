@@ -3,7 +3,6 @@ import P5 from 'p5';
 const sketch = (p: P5) => {
   const boundaryX = 100;
   const boundaryY = 100;
-  let velocity = 0;
 
   function getInitialPosition() {
     return [
