@@ -1,4 +1,6 @@
-const sketch = (p) => {
+import P5 from 'p5';
+
+const sketch = (p: P5) => {
   const boundaryX = 100;
   const boundaryY = 100;
   let velocity = 0;
@@ -20,7 +22,7 @@ const sketch = (p) => {
     p.createCanvas(window.innerWidth, window.innerHeight);
   };
 
-  function getRandomInt(min, max) {
+  function getRandomInt(min: number, max: number) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -50,7 +52,7 @@ const sketch = (p) => {
     }
   }
 
-  function drawTarget(x, y) {
+  function drawTarget(x: number, y: number) {
     p.fill(51);
     p.circle(x, y, 10);
     p.noFill();

@@ -1,16 +1,15 @@
 import '@mantine/core/styles.css';
 import { MantineProvider, createTheme, Loader } from '@mantine/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Start from './start';
+import Start from './components/Start';
 import React, { lazy, Suspense } from 'react';
-import Settings from './Settings';
+import Settings from './components/Settings';
 
-// Necessary to lazy import this because p5 overwrites the DOM
-const Canvas = lazy(() => import('./canvas'));
+const Canvas = lazy(() => import('./components/Canvas'));
 
 const theme = createTheme({});
 
-function App() {
+function App(): JSX.Element {
   return (
     <MantineProvider theme={theme}>
       <Suspense fallback={<Loader />}>

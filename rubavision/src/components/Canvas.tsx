@@ -1,7 +1,7 @@
-import init from './lib/canvas';
+import init from '../lib/canvas';
 import React, { useEffect } from 'react';
 
-export default function Canvas() {
+export default function Canvas(): JSX.Element {
   init();
 
   useEffect(() => () => {

@@ -5,11 +5,18 @@
   "dependencies": {
     "@mantine/core": "^7.0.0",
     "@mantine/hooks": "^7.0.0",
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.7.1",
+    "@types/p5": "^1.7.0",
+    "@types/react": "^18.2.23",
+    "@types/react-dom": "^18.2.8",
+    "capital-t-null-throws": "^2.0.0",
     "p5": "^1.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.4",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "typescript": "^5.2.2"
   },
   "scripts": {
     "web": "react-scripts start",
@@ -34,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-router-dom": "^5.3.3",
     "eslint": "^8.50.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.28.1",

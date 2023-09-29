@@ -16,7 +16,7 @@ export default function Start() {
     defaultValue: 'false',
   });
 
-  const hasAccepted = JSON.parse(accepted) === true;
+  const hasAccepted = JSON.parse(accepted ?? '') === true;
 
   return !hasAccepted ? (
     <Modal
