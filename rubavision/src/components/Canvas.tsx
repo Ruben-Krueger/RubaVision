@@ -1,18 +1,15 @@
-import init from '../lib/canvas';
 import React, { useEffect } from 'react';
-import useIsMounted from '../util/useIsMounted';
+import sketch from '../lib/sketch';
+import p5 from 'p5';
 
 export default function Canvas(): JSX.Element {
-  const isMounted = useIsMounted();
-  console.log(isMounted);
   useEffect(() => {
-    init();
-    // console.log('init', isMounted);
+    new p5(sketch, document.getElementById('sketch') ?? undefined);
 
     return () => {
       document.getElementById('sketch')?.remove();
     };
   }, []);
 
-  return <></>;
+  return <div id="sketch"></div>;
 }

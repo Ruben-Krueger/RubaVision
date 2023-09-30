@@ -1,7 +1,7 @@
 {
   "name": "rubavision",
   "version": "0.1.0",
-  "homepage": "https://ruben-krueger.github.io/RubaVision",
+  "homepage": "https://ruben-krueger.github.io/RubaVision/",
   "private": true,
   "dependencies": {
     "@mantine/core": "^7.0.0",

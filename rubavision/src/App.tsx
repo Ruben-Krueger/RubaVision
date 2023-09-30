@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Start from './components/Start';
 import React, { lazy, Suspense } from 'react';
 import Settings from './components/Settings';
-
-const Canvas = lazy(() => import('./components/Canvas'));
+import Canvas from './components/Canvas';
 
 const theme = createTheme({});
 

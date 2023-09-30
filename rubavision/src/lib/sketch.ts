@@ -29,7 +29,7 @@ const sketch = (p: P5) => {
 
   p.keyPressed = () => {
     if (p.keyCode === p.LEFT_ARROW) {
-      console.log('left');
+      console.log('left', Math.random());
     } else if (p.keyCode === p.RIGHT_ARROW) {
       console.log('right');
     }

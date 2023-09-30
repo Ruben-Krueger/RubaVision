@@ -10,7 +10,7 @@ const styles = {
 export default function Start() {
   const history = useHistory();
 
-  // TODO: flashing because local storage waiting
+  // TODO: fix flashing because local storage waiting
   const [accepted, setHasAccepted] = useLocalStorage({
     key: 'accepted',
     defaultValue: 'false',
