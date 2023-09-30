@@ -1,9 +1,14 @@
 import P5 from 'p5';
+import getRandomInt from '../util/getRandomInt';
+
+const DOT_COUNT = 20;
+
+let boundaryX = 100;
+let boundaryY = 100;
+
+let difficulty = 10;
 
 const sketch = (p: P5) => {
-  const boundaryX = 100;
-  const boundaryY = 100;
-
   function getInitialPosition() {
     return [
       boundaryX + getRandomInt(-50, 50),
@@ -11,21 +16,13 @@ const sketch = (p: P5) => {
     ];
   }
 
-  const positions = [
-    getInitialPosition(),
-    getInitialPosition(),
-    getInitialPosition(),
-  ];
+  const positions = Array.from({ length: DOT_COUNT }, () =>
+    getInitialPosition()
+  );
 
   p.setup = () => {
     p.createCanvas(window.innerWidth, window.innerHeight);
   };
-
-  function getRandomInt(min: number, max: number) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
 
   p.keyPressed = () => {
     if (p.keyCode === p.LEFT_ARROW) {
