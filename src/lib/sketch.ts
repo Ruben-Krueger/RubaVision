@@ -1,76 +1,38 @@
 import P5 from 'p5';
-import getRandomInt from '../util/getRandomInt';
-
-const DOT_COUNT = 20;
-
-let boundaryX = 100;
-let boundaryY = 100;
+import Targets from './targets';
 
 let difficulty = 10;
 
-const sketch = (p: P5) => {
-  function getInitialPosition() {
-    return [
-      boundaryX + getRandomInt(-50, 50),
-      boundaryY + getRandomInt(-50, 50),
-    ];
-  }
+let target_center_X = 100;
+let target_center_Y = 100;
 
-  const positions = Array.from({ length: DOT_COUNT }, () =>
-    getInitialPosition()
-  );
+const sketch = (p5: P5) => {
+  const targets = new Targets(target_center_X, target_center_Y, p5);
 
-  p.setup = () => {
-    p.createCanvas(window.innerWidth, window.innerHeight);
+  p5.setup = () => {
+    p5.createCanvas(window.innerWidth, window.innerHeight);
   };
 
-  p.keyPressed = () => {
-    if (p.keyCode === p.LEFT_ARROW) {
+  p5.keyPressed = () => {
+    if (p5.keyCode === p5.LEFT_ARROW) {
       console.log('left', Math.random());
-    } else if (p.keyCode === p.RIGHT_ARROW) {
+    } else if (p5.keyCode === p5.RIGHT_ARROW) {
       console.log('right');
     }
   };
 
-  p.draw = () => {
-    p.background(255);
-    drawBoundary();
+  p5.draw = () => {
+    p5.background(255);
     drawFocusCircle();
-
-    drawTargets();
-    updateTargets();
+    targets.draw();
+    targets.update();
   };
-
-  function updateTargets() {
-    for (let i = 0; i < positions.length; i++) {
-      positions[i][0] = positions[i][0] + 1;
-      positions[i][1] = positions[i][1] + getRandomInt(-1, 1);
-    }
-  }
-
-  function drawTarget(x: number, y: number) {
-    p.fill(51);
-    p.circle(x, y, 10);
-    p.noFill();
-  }
-
-  function drawTargets() {
-    for (let i = 0; i < positions.length; i++) {
-      const x = positions[i][0];
-      const y = positions[i][1];
-      drawTarget(x, y);
-    }
-  }
 
   function drawFocusCircle() {
     const radius = 20;
-    p.fill(51);
-    p.circle(p.windowWidth / 2, p.windowHeight / 2 - radius / 2, radius);
-    p.noFill();
-  }
-
-  function drawBoundary() {
-    p.circle(boundaryX, boundaryY, 200);
+    p5.fill(51);
+    p5.circle(p5.windowWidth / 2, p5.windowHeight / 2 - radius / 2, radius);
+    p5.noFill();
   }
 };
 
