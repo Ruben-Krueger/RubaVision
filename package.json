@@ -2,15 +2,10 @@
   "name": "rubavision",
   "version": "0.1.0",
   "homepage": "https://ruben-krueger.github.io/RubaVision",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@mantine/core": "^7.0.0",
     "@mantine/hooks": "^7.0.0",
-    "@types/jest": "^29.5.5",
-    "@types/node": "^20.7.1",
-    "@types/p5": "^1.7.0",
-    "@types/react": "^18.2.23",
-    "@types/react-dom": "^18.2.8",
     "capital-t-null-throws": "^2.0.0",
     "p5": "^1.7.0",
     "react": "^18.2.0",
@@ -45,6 +40,11 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/node": "^20.7.1",
+    "@types/p5": "^1.7.0",
+    "@types/react": "^18.2.23",
+    "@types/react-dom": "^18.2.8",
     "@types/react-router-dom": "^5.3.3",
     "eslint": "^8.50.0",
     "eslint-config-standard": "^17.1.0",

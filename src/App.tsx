@@ -5,12 +5,13 @@ import Start from './components/Start';
 import React, { Suspense } from 'react';
 import Settings from './components/Settings';
 import Canvas from './components/Canvas';
+import PageNotFound from './components/PageNotFound';
 
 function App(): JSX.Element {
   return (
-    <MantineProvider>
-      <Suspense fallback={<Loader />}>
-        <Router>
+    <Router basename={process.env.PUBLIC_URL}>
+      <MantineProvider>
+        <Suspense fallback={<Loader />}>
           <Switch>
             <Route exact path="/">
               <Start />
@@ -21,10 +22,11 @@ function App(): JSX.Element {
             <Route path="/settings">
               <Settings />
             </Route>
+            <Route path="*" component={PageNotFound} />
           </Switch>
-        </Router>
-      </Suspense>
-    </MantineProvider>
+        </Suspense>
+      </MantineProvider>
+    </Router>
   );
 }
 

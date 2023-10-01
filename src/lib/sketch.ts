@@ -6,8 +6,20 @@ let difficulty = 10;
 let target_center_X = 100;
 let target_center_Y = 100;
 
+// The time to guess the movement direction after a target is displayed
+const SCORE_INTERVAL_MS = 2000;
+
+let velocity = 1;
+
+let GUESSES_COUNT = 0;
+
+// Timestamps (in miliseconds) of when guesses where recorded
+const GUESSES_TIMESTAMPS: number[] = [];
+
+let MOST_RECENT_ROUND_TIMESTAMP = null;
+
 const sketch = (p5: P5) => {
-  const targets = new Targets(target_center_X, target_center_Y, p5);
+  const targets = new Targets(target_center_X, target_center_Y, p5, velocity);
 
   p5.setup = () => {
     p5.createCanvas(window.innerWidth, window.innerHeight);
@@ -18,6 +30,8 @@ const sketch = (p5: P5) => {
       console.log('left', Math.random());
     } else if (p5.keyCode === p5.RIGHT_ARROW) {
       console.log('right');
+    } else if (p5.keyCode === 32) {
+      targets.moveTargets();
     }
   };
 
