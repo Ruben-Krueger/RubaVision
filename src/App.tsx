@@ -10,7 +10,7 @@ function App(): JSX.Element {
   return (
     <MantineProvider>
       <Suspense fallback={<Loader />}>
-        <Router>
+        <Router basename={window.location.pathname || ''}>
           <Switch>
             <Route exact path="/">
               <Start />
