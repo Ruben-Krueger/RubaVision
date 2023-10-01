@@ -11,6 +11,7 @@ const SCORE_INTERVAL_MS = 2000;
 
 let velocity = 1;
 
+// The number of guesses recorded
 let GUESSES_COUNT = 0;
 
 // Timestamps (in miliseconds) of when guesses where recorded
