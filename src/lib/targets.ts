@@ -82,10 +82,9 @@ class Targets {
           ? position.x + this.velocity
           : this.velocity;
 
-      console.log(position);
       return {
         x: updatedX,
-        y: position.y + getRandomInt(-2, 2),
+        y: position.y + getRandomInt(-3, 3),
       };
     });
 
