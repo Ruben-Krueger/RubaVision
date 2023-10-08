@@ -9,7 +9,7 @@ import PageNotFound from './components/PageNotFound';
 
 function App(): JSX.Element {
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router>
       <MantineProvider>
         <Suspense fallback={<Loader />}>
           <Switch>
