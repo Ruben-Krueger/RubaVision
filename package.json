@@ -1,6 +1,7 @@
 {
   "name": "rubavision",
   "version": "0.1.0",
+  "homepage": "/",
   "private": false,
   "dependencies": {
     "@mantine/core": "^7.0.0",
