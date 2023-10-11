@@ -1,7 +1,7 @@
 {
   "name": "rubavision",
   "version": "0.1.0",
-  "homepage": "https://rubavision.netlify.app/src",
+  "homepage": "https://rubavision.netlify.app",
   "private": false,
   "dependencies": {
     "@mantine/core": "^7.0.0",
