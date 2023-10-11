@@ -8,7 +8,6 @@ import Canvas from './components/Canvas';
 import PageNotFound from './components/PageNotFound';
 
 function App(): JSX.Element {
-  console.log(process.env.PUBLIC_URL);
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <MantineProvider>
