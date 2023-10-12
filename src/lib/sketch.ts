@@ -1,6 +1,5 @@
 import P5 from 'p5';
 import Targets from './targets';
-import 'p5/lib/addons/p5.sound';
 
 let difficulty = 10;
 
