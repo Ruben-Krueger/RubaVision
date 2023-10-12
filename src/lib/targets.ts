@@ -81,16 +81,18 @@ class Targets {
   }
 
   updateTargets() {
-    const newPositions = this.positions.map((position) => ({
-      x: position.x + this.velocity,
-      y: position.y + getRandomInt(-this.jitter, this.jitter),
-    }));
+    const newPositions = this.positions
+      .map((position) => ({
+        x: position.x + this.velocity,
+        y: position.y + getRandomInt(-this.jitter, this.jitter),
+      }))
+      .filter(
+        (target) =>
+          getDistance(target, { x: this.centerX, y: this.centerX }) <
+          BOUNDARY_RADIUS
+      );
 
-    this.positions = newPositions.filter(
-      (target) =>
-        getDistance(target, { x: this.centerX, y: this.centerX }) <
-        BOUNDARY_RADIUS
-    );
+    this.positions = newPositions;
   }
 }
 
