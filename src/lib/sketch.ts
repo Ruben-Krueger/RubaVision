@@ -1,5 +1,6 @@
 import P5 from 'p5';
 import Targets from './targets';
+import 'p5/lib/addons/p5.sound';
 
 let difficulty = 10;
 
@@ -28,7 +29,7 @@ const sketch = (p5: P5) => {
 
   p5.keyPressed = () => {
     if (p5.keyCode === p5.LEFT_ARROW) {
-      console.log('left', Math.random());
+      console.log('left');
     } else if (p5.keyCode === p5.RIGHT_ARROW) {
       console.log('right');
     } else if (p5.keyCode === 32) {

@@ -11,8 +11,8 @@ const TARGET_DIAMETER = 10;
 
 function getInitialPosition(centerX: number, centerY: number): Position {
   return {
-    x: centerX + getRandomInt(-50, 50),
-    y: centerY + getRandomInt(-50, 50),
+    x: centerX + getRandomInt(-BOUNDARY_RADIUS, BOUNDARY_RADIUS),
+    y: centerY + getRandomInt(-BOUNDARY_RADIUS, BOUNDARY_RADIUS),
   };
 }
 
@@ -22,8 +22,15 @@ class Targets {
   p5: P5;
   positions: Position[];
   velocity: number;
+  jitter: number;
 
-  constructor(centerX: number, centerY: number, p5: P5, velocity: number) {
+  constructor(
+    centerX: number,
+    centerY: number,
+    p5: P5,
+    velocity: number,
+    jitter = 5
+  ) {
     this.centerX = centerX;
     this.centerY = centerY;
     this.p5 = p5;
@@ -33,6 +40,8 @@ class Targets {
     );
 
     this.velocity = velocity;
+
+    this.jitter = jitter;
   }
 
   draw() {
@@ -72,23 +81,16 @@ class Targets {
   }
 
   updateTargets() {
-    const newPositions = this.positions.map((position) => {
-      const updatedX =
-        getDistance(
-          { x: position.x + this.velocity, y: position.y },
-          { x: this.centerX, y: this.centerY }
-        ) <
-        BOUNDARY_DIAMETER / 2
-          ? position.x + this.velocity
-          : this.velocity;
+    const newPositions = this.positions.map((position) => ({
+      x: position.x + this.velocity,
+      y: position.y + getRandomInt(-this.jitter, this.jitter),
+    }));
 
-      return {
-        x: updatedX,
-        y: position.y + getRandomInt(-3, 3),
-      };
-    });
-
-    this.positions = newPositions;
+    this.positions = newPositions.filter(
+      (target) =>
+        getDistance(target, { x: this.centerX, y: this.centerX }) <
+        BOUNDARY_RADIUS
+    );
   }
 }
 
