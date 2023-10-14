@@ -1,5 +1,7 @@
 import P5 from 'p5';
 import Targets from './targets';
+import Direction from '../types/Direction';
+import Round from '../types/Round';
 let difficulty = 10;
 
 // The time to guess the movement direction after a target is displayed
@@ -11,16 +13,7 @@ let CURRENT_ROUND_END_MS: number | null = null;
 
 const NUMBER_OF_ROUNDS = 5;
 
-type Direction = 'left' | 'right';
-
 let direction: Direction = 'left';
-
-type Round = {
-  startMS: number;
-  endMS: number;
-  guess: Direction | null;
-  answer: Direction;
-};
 
 let rounds: Round[] = [];
 
@@ -42,8 +35,6 @@ const sketch = (p5: P5) => {
         answer: Math.random() > 0.5 ? 'left' : 'right',
       });
     }
-
-    console.log(rounds);
   };
 
   p5.keyPressed = () => {
@@ -70,6 +61,9 @@ const sketch = (p5: P5) => {
 
     if (now >= rounds[rounds.length - 1].endMS) {
       p5.noLoop();
+
+      window.localStorage.setItem('rounds', JSON.stringify(rounds));
+      window.location.href = '/end';
     }
 
     CURRENT_ROUND_END_MS = CURRENT_ROUND_END_MS ?? now + ROUND_INTERVAL_MS;
