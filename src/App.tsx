@@ -14,6 +14,10 @@ function App(): JSX.Element {
         <Suspense fallback={<Loader />}>
           <Switch>
             <Route exact path="/">
+              {/* I could never get a component to render in prod at "/" */}
+              {/* I hate coding lol */}
+            </Route>
+            <Route exact path="/start">
               <Start />
             </Route>
             <Route path="/play">
