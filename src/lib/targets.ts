@@ -19,7 +19,7 @@ function getInitialTargetPosition(centerPosition: Position): Position {
 function getNewBoundaryPosition(): Position {
   return {
     x: getRandomInt(BOUNDARY_RADIUS, window.innerWidth - BOUNDARY_RADIUS),
-    y: getRandomInt(BOUNDARY_RADIUS, window.innerWidth - BOUNDARY_RADIUS),
+    y: getRandomInt(BOUNDARY_RADIUS, window.innerHeight - BOUNDARY_RADIUS),
   };
 }
 
@@ -69,7 +69,9 @@ class Targets {
     this.updateTargets();
   }
 
-  moveTargets() {
+  moveTargets(newDirection: number) {
+    this.velocity = newDirection;
+
     this.boundaryPosition = getNewBoundaryPosition();
 
     this.positions = Array.from({ length: DOT_COUNT }, () =>

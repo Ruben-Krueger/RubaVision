@@ -16,7 +16,6 @@ function App(): JSX.Element {
           <Switch>
             <Route exact path="/">
               {/* I could never get a component to render in prod at "/" */}
-              {/* I hate coding lol */}
             </Route>
             <Route path="/start">
               <Start />
