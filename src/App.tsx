@@ -17,7 +17,7 @@ function App(): JSX.Element {
               {/* I could never get a component to render in prod at "/" */}
               {/* I hate coding lol */}
             </Route>
-            <Route exact path="/start">
+            <Route path="/start">
               <Start />
             </Route>
             <Route path="/play">

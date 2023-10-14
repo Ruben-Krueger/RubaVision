@@ -50,6 +50,7 @@ class Targets {
   }
 
   drawBoundary() {
+    console.log(this.centerX);
     this.p5.circle(this.centerX, this.centerY, BOUNDARY_DIAMETER);
   }
 
@@ -66,6 +67,7 @@ class Targets {
   }
 
   moveTargets() {
+    console.log('move targets');
     this.centerX = getRandomInt(
       BOUNDARY_RADIUS,
       window.innerWidth - BOUNDARY_RADIUS
