@@ -6,6 +6,7 @@ import React, { Suspense } from 'react';
 import Settings from './components/Settings';
 import Canvas from './components/Canvas';
 import PageNotFound from './components/PageNotFound';
+import End from './components/End';
 
 function App(): JSX.Element {
   return (
@@ -22,6 +23,9 @@ function App(): JSX.Element {
             </Route>
             <Route path="/play">
               <Canvas />
+            </Route>
+            <Route path="/end">
+              <End />
             </Route>
             <Route path="/settings">
               <Settings />

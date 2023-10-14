@@ -14,7 +14,8 @@ export default function Settings(): JSX.Element {
         <Flex direction="column">
           <Text size="xl">Settings</Text>
           <Text size="lg">
-            This isn't implemented yet, but some possibilities are:
+            This isn't implemented yet (i.e., adjusting these does not affect
+            gameplay), but some possibilities are:
           </Text>
 
           <Space h="xl" />

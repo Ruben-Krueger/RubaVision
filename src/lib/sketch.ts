@@ -1,11 +1,6 @@
 import P5 from 'p5';
 import Targets from './targets';
-import useSound from 'use-sound';
-
 let difficulty = 10;
-
-let target_center_X = 100;
-let target_center_Y = 100;
 
 // The time to guess the movement direction after a target is displayed
 const SCORE_INTERVAL_MS = 1500;
@@ -15,13 +10,18 @@ let velocity = 1;
 // The number of guesses recorded
 let GUESSES_COUNT = 0;
 
+// The number of correct rounds
+let SCORE = 0;
+
 // Timestamps (in miliseconds) of when guesses where recorded
 const GUESSES_TIMESTAMPS: number[] = [];
 
 let CURRENT_ROUND_END_MS: number | null = null;
 
+const NUMBER_OF_ROUNDS = 5;
+
 const sketch = (p5: P5) => {
-  const targets = new Targets(target_center_X, target_center_Y, p5, velocity);
+  const targets = new Targets(p5, velocity);
 
   p5.setup = () => {
     p5.createCanvas(window.innerWidth, window.innerHeight);

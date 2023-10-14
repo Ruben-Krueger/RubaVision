@@ -9,34 +9,34 @@ const BOUNDARY_DIAMETER = 200;
 const BOUNDARY_RADIUS = BOUNDARY_DIAMETER / 2;
 const TARGET_DIAMETER = 10;
 
-function getInitialPosition(centerX: number, centerY: number): Position {
+function getInitialTargetPosition(centerPosition: Position): Position {
   return {
-    x: centerX + getRandomInt(-BOUNDARY_RADIUS, BOUNDARY_RADIUS),
-    y: centerY + getRandomInt(-BOUNDARY_RADIUS, BOUNDARY_RADIUS),
+    x: centerPosition.x + getRandomInt(-BOUNDARY_RADIUS, BOUNDARY_RADIUS),
+    y: centerPosition.y + getRandomInt(-BOUNDARY_RADIUS, BOUNDARY_RADIUS),
+  };
+}
+
+function getNewBoundaryPosition(): Position {
+  return {
+    x: getRandomInt(BOUNDARY_RADIUS, window.innerWidth - BOUNDARY_RADIUS),
+    y: getRandomInt(BOUNDARY_RADIUS, window.innerWidth - BOUNDARY_RADIUS),
   };
 }
 
 class Targets {
-  centerX: number;
-  centerY: number;
+  boundaryPosition: Position;
   p5: P5;
   positions: Position[];
   velocity: number;
   jitter: number;
 
-  constructor(
-    centerX: number,
-    centerY: number,
-    p5: P5,
-    velocity: number,
-    jitter = 5
-  ) {
-    this.centerX = centerX;
-    this.centerY = centerY;
+  constructor(p5: P5, velocity: number, jitter = 5) {
     this.p5 = p5;
 
+    this.boundaryPosition = getNewBoundaryPosition();
+
     this.positions = Array.from({ length: DOT_COUNT }, () =>
-      getInitialPosition(this.centerX, this.centerX)
+      getInitialTargetPosition(this.boundaryPosition)
     );
 
     this.velocity = velocity;
@@ -50,8 +50,11 @@ class Targets {
   }
 
   drawBoundary() {
-    console.log(this.centerX);
-    this.p5.circle(this.centerX, this.centerY, BOUNDARY_DIAMETER);
+    this.p5.circle(
+      this.boundaryPosition.x,
+      this.boundaryPosition.y,
+      BOUNDARY_DIAMETER
+    );
   }
 
   drawTargets() {
@@ -67,18 +70,10 @@ class Targets {
   }
 
   moveTargets() {
-    console.log('move targets');
-    this.centerX = getRandomInt(
-      BOUNDARY_RADIUS,
-      window.innerWidth - BOUNDARY_RADIUS
-    );
-    this.centerY = getRandomInt(
-      BOUNDARY_RADIUS,
-      window.innerHeight - BOUNDARY_RADIUS
-    );
+    this.boundaryPosition = getNewBoundaryPosition();
 
     this.positions = Array.from({ length: DOT_COUNT }, () =>
-      getInitialPosition(this.centerX, this.centerX)
+      getInitialTargetPosition(this.boundaryPosition)
     );
   }
 
@@ -89,9 +84,7 @@ class Targets {
         y: position.y + getRandomInt(-this.jitter, this.jitter),
       }))
       .filter(
-        (target) =>
-          getDistance(target, { x: this.centerX, y: this.centerX }) <
-          BOUNDARY_RADIUS
+        (target) => getDistance(target, this.boundaryPosition) < BOUNDARY_RADIUS
       );
 
     this.positions = newPositions;
