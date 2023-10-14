@@ -30,10 +30,9 @@ const sketch = (p5: P5) => {
   p5.keyPressed = () => {
     if (p5.keyCode === p5.LEFT_ARROW) {
       console.log('left');
+      GUESSES_TIMESTAMPS.push();
     } else if (p5.keyCode === p5.RIGHT_ARROW) {
       console.log('right');
-    } else if (p5.keyCode === 32) {
-      targets.moveTargets();
     }
   };
 
@@ -45,7 +44,6 @@ const sketch = (p5: P5) => {
     CURRENT_ROUND_END_MS = CURRENT_ROUND_END_MS ?? now + SCORE_INTERVAL_MS;
 
     if (now > CURRENT_ROUND_END_MS) {
-      console.log('here');
       CURRENT_ROUND_END_MS = now + SCORE_INTERVAL_MS;
       targets.moveTargets();
     }
