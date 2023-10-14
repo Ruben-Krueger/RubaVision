@@ -1,11 +1,18 @@
-import { Button, Center, Text, Container, Flex, Modal } from '@mantine/core';
+import {
+  Button,
+  Center,
+  Text,
+  Container,
+  Flex,
+  Modal,
+  Paper,
+  Space,
+} from '@mantine/core';
 import { useHistory } from 'react-router-dom';
 import React from 'react';
 import { useLocalStorage } from '@mantine/hooks';
 
-const styles = {
-  title: {},
-};
+const MODAL_ENABLED = false;
 
 export default function Start() {
   const history = useHistory();
@@ -18,7 +25,7 @@ export default function Start() {
 
   const hasAccepted = JSON.parse(accepted ?? '') === true;
 
-  return !hasAccepted ? (
+  return MODAL_ENABLED && !hasAccepted ? (
     <Modal
       opened={hasAccepted}
       onClose={() => {}}
@@ -37,7 +44,23 @@ export default function Start() {
     <Container>
       <Center>
         <Flex direction="column">
-          <Text style={styles.title}>RubaVision</Text>
+          <Text size="xl">RubaVision</Text>
+
+          <Paper shadow="xs" p="xl">
+            <Text>Game play:</Text>
+            <Text>
+              - Black circles will be moving left or right (with random vertical
+              motion)
+            </Text>
+            <Text>
+              - Use the left and right arrows to guess whether it is left or
+              right
+            </Text>
+            <Text>- Click "START" to begin</Text>
+          </Paper>
+
+          <Space h="lg" />
+
           <Flex gap="md" direction="column">
             <Button onClick={() => history.push('/play')}>START</Button>
             <Button onClick={() => history.push('/settings')}>SETTINGS</Button>
