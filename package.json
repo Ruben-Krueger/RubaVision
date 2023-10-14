@@ -6,6 +6,7 @@
   "dependencies": {
     "@mantine/core": "^7.0.0",
     "@mantine/hooks": "^7.0.0",
+    "@tabler/icons-react": "^2.39.0",
     "capital-t-null-throws": "^2.0.0",
     "p5": "^1.7.0",
     "react": "^18.2.0",
