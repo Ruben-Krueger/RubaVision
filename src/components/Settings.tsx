@@ -1,5 +1,67 @@
-import { Text, Container, Center, Flex, Slider, Space } from '@mantine/core';
+import {
+  Text,
+  Container,
+  Center,
+  Flex,
+  Slider,
+  Space,
+  Code,
+  Group,
+  Box,
+  rem,
+} from '@mantine/core';
 import React, { useState } from 'react';
+import { useMove } from '@mantine/hooks';
+
+function CoordinateBox() {
+  /*
+
+  TODO: 
+    1. get the settings value
+    2. 
+
+  */
+
+  const [value, setValue] = useState({ x: 0.2, y: 0.6 });
+  const { ref, active } = useMove(setValue);
+
+  const width = 100;
+  const height = 100;
+
+  console.log(width, height);
+
+  return (
+    <>
+      <Group justify="center">
+        <div
+          ref={ref}
+          style={{
+            width,
+            height,
+            backgroundColor: 'var(--mantine-color-blue-light)',
+            position: 'relative',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              left: `calc(${value.x * 100}% - ${rem(8)})`,
+              top: `calc(${value.y * 100}% - ${rem(8)})`,
+              width: rem(16),
+              height: rem(16),
+              backgroundColor: active
+                ? 'var(--mantine-color-teal-7)'
+                : 'var(--mantine-color-blue-7)',
+            }}
+          />
+        </div>
+      </Group>
+      <Text ta="center" mt="sm">
+        Values {value.x} {value.y}
+      </Text>
+    </>
+  );
+}
 
 export default function Settings(): JSX.Element {
   const [numberOfRounds, setNumberOfRounds] = useState(5);
@@ -36,6 +98,8 @@ export default function Settings(): JSX.Element {
           <Text size="md" fs="italic">
             Screen location for targets
           </Text>
+
+          <CoordinateBox />
         </Flex>
       </Center>
     </Container>
