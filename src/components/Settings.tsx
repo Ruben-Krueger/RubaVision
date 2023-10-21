@@ -5,13 +5,12 @@ import {
   Flex,
   Slider,
   Space,
-  Code,
   Group,
-  Box,
   rem,
 } from '@mantine/core';
 import React, { useState } from 'react';
 import { useMove } from '@mantine/hooks';
+import { useLocalStorage } from '@mantine/hooks';
 
 function CoordinateBox() {
   /*
@@ -64,7 +63,15 @@ function CoordinateBox() {
 }
 
 export default function Settings(): JSX.Element {
-  const [numberOfRounds, setNumberOfRounds] = useState(5);
+  const [numberOfRounds, setNumberOfRounds] = useLocalStorage({
+    key: 'number-rounds',
+    defaultValue: 5,
+  });
+
+  const [roundLength, setRoundLength] = useLocalStorage({
+    key: 'round-length',
+    defaultValue: 1,
+  });
 
   return (
     <Container>
@@ -89,6 +96,26 @@ export default function Settings(): JSX.Element {
               { value: 1, label: '1' },
               { value: 5, label: '5' },
               { value: 10, label: '10' },
+            ]}
+          />
+
+          <Space h="xl" />
+
+          <Text size="md">Round length</Text>
+          <Text size="md" fs="italic">
+            The amount of time per each round in seconds.
+          </Text>
+          <Slider
+            min={1}
+            max={5}
+            defaultValue={5}
+            label={roundLength}
+            value={roundLength}
+            onChange={(value) => setRoundLength(value)}
+            marks={[
+              { value: 1, label: '1' },
+              { value: 2.5, label: '2.5' },
+              { value: 5, label: '5' },
             ]}
           />
 

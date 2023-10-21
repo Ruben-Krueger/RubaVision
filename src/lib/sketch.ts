@@ -2,15 +2,16 @@ import P5 from 'p5';
 import Targets from './targets';
 import Round from '../types/Round';
 import storeResults from '../util/storeResults';
+import getLocalStorage from '../util/getLocalStorage';
 
 // The time to guess the movement direction after a target is displayed
-const ROUND_INTERVAL_MS = 1500;
+const ROUND_INTERVAL_MS = getLocalStorage('round-length', 1) * 1000;
 
 let velocity = 1;
 
 let CURRENT_ROUND_END_MS: number | null = null;
 
-const NUMBER_OF_ROUNDS = 5;
+const NUMBER_OF_ROUNDS = getLocalStorage('number-rounds', 5);
 
 let rounds: Round[] = [];
 
@@ -26,6 +27,7 @@ const sketch = (p5: P5) => {
     for (let i = 0; i < NUMBER_OF_ROUNDS; i++) {
       const previousEnd = rounds[i - 1]?.endTimestamp ?? now;
       rounds.push({
+        index: i,
         startTimestamp: previousEnd,
         endTimestamp: previousEnd + ROUND_INTERVAL_MS,
         guess: null,
