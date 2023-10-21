@@ -11,13 +11,36 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Round from '../types/Round';
 import { IconCheck, IconCircleX } from '@tabler/icons-react';
+import Data from '../types/Data';
+import nullThrows from 'capital-t-null-throws';
+import { DateTime } from 'luxon';
+
+function downloadResults(gameData: Data) {
+  const data =
+    'data:text/json;charset=utf-8,' +
+    encodeURIComponent(JSON.stringify(gameData, undefined, 2));
+
+  const time = DateTime.fromMillis(gameData.timestamp).toFormat('ff');
+
+  const fileName = `${time}-results.json`;
+
+  var downloadAnchorNode = document.createElement('a');
+  downloadAnchorNode.setAttribute('href', data);
+  downloadAnchorNode.setAttribute('download', fileName);
+  document.body.appendChild(downloadAnchorNode); // required for firefox
+  downloadAnchorNode.click();
+  downloadAnchorNode.remove();
+}
 
 export default function End(): JSX.Element {
   const history = useHistory();
 
-  const savedInformation = window.localStorage.getItem('rounds');
-  const rounds =
-    savedInformation == null ? [] : (JSON.parse(savedInformation) as Round[]);
+  const savedInformation = window.localStorage.getItem('data');
+
+  const data =
+    savedInformation == null ? null : (JSON.parse(savedInformation) as Data);
+
+  const rounds = data?.rounds ?? [];
 
   const score = rounds.filter((r) => r.guess === r.answer).length;
 
@@ -31,7 +54,7 @@ export default function End(): JSX.Element {
           )}
           <Text size="md">Total score: {score} </Text>
 
-          {rounds.map((round, i) => (
+          {rounds.map((round) => (
             <Paper key={round.startMS} shadow="xs" p="xl">
               <Flex>
                 {round.guess === round.answer ? (
@@ -49,6 +72,13 @@ export default function End(): JSX.Element {
           ))}
 
           <Button onClick={() => history.push('/play')}>PLAY AGAIN</Button>
+
+          <Button
+            disabled={data == null}
+            onClick={() => downloadResults(nullThrows(data))}
+          >
+            DOWNLOAD
+          </Button>
         </Flex>
       </Center>
     </Container>
