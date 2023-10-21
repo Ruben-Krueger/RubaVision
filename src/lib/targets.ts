@@ -49,6 +49,10 @@ class Targets {
     this.drawBoundary();
   }
 
+  getTargetCenter(): Position {
+    return { x: this.boundaryPosition.x, y: this.boundaryPosition.y };
+  }
+
   drawBoundary() {
     this.p5.circle(
       this.boundaryPosition.x,

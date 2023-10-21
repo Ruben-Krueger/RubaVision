@@ -55,7 +55,7 @@ export default function End(): JSX.Element {
           <Text size="md">Total score: {score} </Text>
 
           {rounds.map((round) => (
-            <Paper key={round.startMS} shadow="xs" p="xl">
+            <Paper key={round.startTimestamp} shadow="xs" p="xl">
               <Flex>
                 {round.guess === round.answer ? (
                   <IconCheck color="green" />
@@ -76,6 +76,7 @@ export default function End(): JSX.Element {
           <Button
             disabled={data == null}
             onClick={() => downloadResults(nullThrows(data))}
+            color="gray"
           >
             DOWNLOAD
           </Button>

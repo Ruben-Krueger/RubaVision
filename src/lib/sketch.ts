@@ -24,12 +24,13 @@ const sketch = (p5: P5) => {
 
     // Initialize round information
     for (let i = 0; i < NUMBER_OF_ROUNDS; i++) {
-      const previousEnd = rounds[i - 1]?.endMS ?? now;
+      const previousEnd = rounds[i - 1]?.endTimestamp ?? now;
       rounds.push({
-        startMS: previousEnd,
-        endMS: previousEnd + ROUND_INTERVAL_MS,
+        startTimestamp: previousEnd,
+        endTimestamp: previousEnd + ROUND_INTERVAL_MS,
         guess: null,
         answer: Math.random() > 0.5 ? 'left' : 'right',
+        targetCenter: targets.getTargetCenter(),
       });
     }
   };
@@ -44,7 +45,9 @@ const sketch = (p5: P5) => {
 
     const now = Date.now();
 
-    const round = rounds.find((r) => now > r.startMS && now < r.endMS);
+    const round = rounds.find(
+      (r) => now > r.startTimestamp && now < r.endTimestamp
+    );
     if (round) {
       round.guess = guess;
     }
@@ -57,7 +60,7 @@ const sketch = (p5: P5) => {
     const now = Date.now();
 
     // Game has ended
-    if (now >= rounds[rounds.length - 1].endMS) {
+    if (now >= rounds[rounds.length - 1].endTimestamp) {
       p5.noLoop();
 
       storeResults(rounds);
@@ -67,7 +70,9 @@ const sketch = (p5: P5) => {
 
     CURRENT_ROUND_END_MS = CURRENT_ROUND_END_MS ?? now + ROUND_INTERVAL_MS;
 
-    const round = rounds.find((r) => now > r.startMS && now < r.endMS);
+    const round = rounds.find(
+      (r) => now > r.startTimestamp && now < r.endTimestamp
+    );
 
     if (now > CURRENT_ROUND_END_MS) {
       CURRENT_ROUND_END_MS = now + ROUND_INTERVAL_MS;
