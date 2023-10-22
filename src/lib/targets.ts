@@ -30,10 +30,15 @@ class Targets {
   velocity: number;
   jitter: number;
 
-  constructor(p5: P5, velocity: number, jitter = 5) {
+  constructor(
+    p5: P5,
+    velocity: number,
+    targetCenter?: Position | null,
+    jitter = 5
+  ) {
     this.p5 = p5;
 
-    this.boundaryPosition = getNewBoundaryPosition();
+    this.boundaryPosition = targetCenter ?? getNewBoundaryPosition();
 
     this.positions = Array.from({ length: DOT_COUNT }, () =>
       getInitialTargetPosition(this.boundaryPosition)

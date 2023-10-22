@@ -18,14 +18,14 @@ function CoordinateBox({ disabled }: { disabled: boolean }) {
   const height = window.innerHeight / 5;
 
   const [value, setValue] = useLocalStorage({
-    key: 'coordinate-position',
+    key: 'target-center',
     defaultValue: { x: 0, y: 0 },
   });
 
-  const { ref, active } = useMove(setValue);
-
   const x = Math.round((value?.x ?? 0) * window.innerWidth);
   const y = Math.round((value?.y ?? 0) * window.innerHeight);
+
+  const { ref, active } = useMove(setValue);
 
   return (
     <>
@@ -77,7 +77,7 @@ export default function Settings(): JSX.Element {
 
   const [hasMovingTargetCenter, setHasMovingTargetCenter] = useLocalStorage({
     key: 'has-moving-target-center',
-    defaultValue: false,
+    defaultValue: true,
   });
 
   return (
@@ -121,7 +121,7 @@ export default function Settings(): JSX.Element {
             onChange={(value) => setRoundLength(value)}
             marks={[
               { value: 1, label: '1' },
-              { value: 2.5, label: '2.5' },
+              { value: 3, label: '3' },
               { value: 5, label: '5' },
             ]}
           />
