@@ -8,12 +8,14 @@ import {
   Group,
   rem,
   Checkbox,
+  Button,
 } from '@mantine/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { useMove } from '@mantine/hooks';
 import { useLocalStorage } from '@mantine/hooks';
+import { useHistory } from 'react-router-dom';
 
-function CoordinateBox({ disabled }: { disabled: boolean }) {
+function CoordinateBox() {
   const width = window.innerWidth / 5;
   const height = window.innerHeight / 5;
 
@@ -22,13 +24,39 @@ function CoordinateBox({ disabled }: { disabled: boolean }) {
     defaultValue: { x: 0, y: 0 },
   });
 
+  const [hasMovingTargetCenter, setHasMovingTargetCenter] = useLocalStorage({
+    key: 'has-moving-target-center',
+    defaultValue: true,
+  });
+
   const x = Math.round((value?.x ?? 0) * window.innerWidth);
   const y = Math.round((value?.y ?? 0) * window.innerHeight);
 
   const { ref, active } = useMove(setValue);
 
+  const disabled = hasMovingTargetCenter;
+
+  console.log(
+    window.localStorage.getItem('has-moving-target-center'),
+    window.localStorage.getItem('target-center')
+  );
+
   return (
-    <>
+    <Container>
+      <Checkbox
+        defaultChecked
+        label="Alternate the target center"
+        value={false ? 'checked' : 'unchecked'}
+        onChange={(event) => setHasMovingTargetCenter(event.target.checked)}
+        description={
+          hasMovingTargetCenter
+            ? 'Uncheck this to manually set a target center below'
+            : 'Check this to randomly move target centers'
+        }
+      />
+
+      <Space h="xl" />
+
       <Group justify="center">
         <div
           ref={ref}
@@ -60,7 +88,7 @@ function CoordinateBox({ disabled }: { disabled: boolean }) {
           x: {x} y: {y}
         </Text>
       )}
-    </>
+    </Container>
   );
 }
 
@@ -75,10 +103,7 @@ export default function Settings(): JSX.Element {
     defaultValue: 1,
   });
 
-  const [hasMovingTargetCenter, setHasMovingTargetCenter] = useLocalStorage({
-    key: 'has-moving-target-center',
-    defaultValue: true,
-  });
+  const history = useHistory();
 
   return (
     <Container>
@@ -130,31 +155,11 @@ export default function Settings(): JSX.Element {
 
           <Text size="lg">Target position</Text>
 
-          <Space h="xl" />
-
-          <Text size="md" fs="italic">
-            Alternate targets
-          </Text>
-
-          <Checkbox
-            defaultChecked
-            label="Alternate the target center"
-            value={hasMovingTargetCenter ? 'checked' : 'unchecked'}
-            onChange={(event) => setHasMovingTargetCenter(event.target.checked)}
-            description={
-              hasMovingTargetCenter
-                ? 'Uncheck this to manually set a target center below'
-                : 'Check this to randomly move target centers'
-            }
-          />
+          <CoordinateBox />
 
           <Space h="xl" />
 
-          <Text size="md" fs="italic">
-            Screen location for targets
-          </Text>
-
-          <CoordinateBox disabled={hasMovingTargetCenter ?? false} />
+          <Button onClick={() => history.push('/play')}>PLAY</Button>
         </Flex>
       </Center>
     </Container>

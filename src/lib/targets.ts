@@ -78,6 +78,14 @@ class Targets {
     this.updateTargets();
   }
 
+  reset(newDirection: number) {
+    this.velocity = newDirection;
+
+    this.positions = Array.from({ length: DOT_COUNT }, () =>
+      getInitialTargetPosition(this.boundaryPosition)
+    );
+  }
+
   moveTargets(newDirection: number) {
     this.velocity = newDirection;
 

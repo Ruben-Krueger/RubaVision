@@ -13,13 +13,19 @@ let CURRENT_ROUND_END_MS: number | null = null;
 
 const NUMBER_OF_ROUNDS = getLocalStorage('number-rounds', 5);
 
-const TARGET_CENTER = getLocalStorage('target-center', null);
+const { x, y } = getLocalStorage('target-center', { x: 0, y: 0 });
+const TARGET_CENTER = { x: x * window.innerWidth, y: y * window.innerHeight };
 const HAS_MOVING_TARGETS = getLocalStorage('has-moving-target-center', true);
 
 let rounds: Round[] = [];
 
 const sketch = (p5: P5) => {
-  const targets = new Targets(p5, velocity, TARGET_CENTER);
+  console.log(TARGET_CENTER);
+  const targets = new Targets(
+    p5,
+    velocity,
+    HAS_MOVING_TARGETS ? null : TARGET_CENTER
+  );
 
   p5.setup = () => {
     p5.createCanvas(window.innerWidth, window.innerHeight);
@@ -85,6 +91,8 @@ const sketch = (p5: P5) => {
 
       if (HAS_MOVING_TARGETS) {
         targets.moveTargets(newVelocity);
+      } else {
+        targets.reset(newVelocity);
       }
     }
 
