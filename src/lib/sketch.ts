@@ -75,7 +75,7 @@ const sketch = (p5: P5) => {
 
       storeResults(rounds);
 
-      // window.location.href = '/end';
+      window.location.href = '/end';
     }
 
     CURRENT_ROUND_END_MS = CURRENT_ROUND_END_MS ?? now + ROUND_INTERVAL_MS;
