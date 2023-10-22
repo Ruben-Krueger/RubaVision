@@ -4,23 +4,22 @@ import Round from '../types/Round';
 import storeResults from '../util/storeResults';
 import getLocalStorage from '../util/getLocalStorage';
 
-// The time to guess the movement direction after a target is displayed
-const ROUND_INTERVAL_MS = getLocalStorage('round-length', 1) * 1000;
-
-let velocity = 1;
-
-let CURRENT_ROUND_END_MS: number | null = null;
-
-const NUMBER_OF_ROUNDS = getLocalStorage('number-rounds', 5);
-
-const { x, y } = getLocalStorage('target-center', { x: 0, y: 0 });
-const TARGET_CENTER = { x: x * window.innerWidth, y: y * window.innerHeight };
-const HAS_MOVING_TARGETS = getLocalStorage('has-moving-target-center', true);
-
 let rounds: Round[] = [];
 
 const sketch = (p5: P5) => {
-  console.log(TARGET_CENTER);
+  // The time to guess the movement direction after a target is displayed
+  const ROUND_INTERVAL_MS = getLocalStorage('round-length', 1) * 1000;
+
+  let velocity = 1;
+
+  let CURRENT_ROUND_END_MS: number | null = null;
+
+  const NUMBER_OF_ROUNDS = getLocalStorage('number-rounds', 5);
+
+  const { x, y } = getLocalStorage('target-center', { x: 0, y: 0 });
+  const TARGET_CENTER = { x: x * window.innerWidth, y: y * window.innerHeight };
+  const HAS_MOVING_TARGETS = getLocalStorage('has-moving-target-center', true);
+
   const targets = new Targets(
     p5,
     velocity,
@@ -76,7 +75,7 @@ const sketch = (p5: P5) => {
 
       storeResults(rounds);
 
-      window.location.href = '/end';
+      // window.location.href = '/end';
     }
 
     CURRENT_ROUND_END_MS = CURRENT_ROUND_END_MS ?? now + ROUND_INTERVAL_MS;

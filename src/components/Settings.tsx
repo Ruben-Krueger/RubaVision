@@ -41,7 +41,9 @@ function CoordinateBox() {
       <Checkbox
         label="Alternate the target center"
         checked={hasMovingTargetCenter}
-        onChange={(event) => setHasMovingTargetCenter(event.target.checked)}
+        onChange={(event) => {
+          setHasMovingTargetCenter(event.target.checked);
+        }}
         description={
           hasMovingTargetCenter
             ? 'Uncheck this to manually set a target center below'
