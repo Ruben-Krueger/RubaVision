@@ -7,27 +7,25 @@ import {
   Space,
   Group,
   rem,
+  Checkbox,
 } from '@mantine/core';
-import React, { useState } from 'react';
+import React from 'react';
 import { useMove } from '@mantine/hooks';
 import { useLocalStorage } from '@mantine/hooks';
 
-function CoordinateBox() {
-  /*
+function CoordinateBox({ disabled }: { disabled: boolean }) {
+  const width = window.innerWidth / 5;
+  const height = window.innerHeight / 5;
 
-  TODO: 
-    1. get the settings value
-    2. 
+  const [value, setValue] = useLocalStorage({
+    key: 'coordinate-position',
+    defaultValue: { x: 0, y: 0 },
+  });
 
-  */
-
-  const [value, setValue] = useState({ x: 0.2, y: 0.6 });
   const { ref, active } = useMove(setValue);
 
-  const width = 100;
-  const height = 100;
-
-  console.log(width, height);
+  const x = Math.round((value?.x ?? 0) * window.innerWidth);
+  const y = Math.round((value?.y ?? 0) * window.innerHeight);
 
   return (
     <>
@@ -41,23 +39,27 @@ function CoordinateBox() {
             position: 'relative',
           }}
         >
-          <div
-            style={{
-              position: 'absolute',
-              left: `calc(${value.x * 100}% - ${rem(8)})`,
-              top: `calc(${value.y * 100}% - ${rem(8)})`,
-              width: rem(16),
-              height: rem(16),
-              backgroundColor: active
-                ? 'var(--mantine-color-teal-7)'
-                : 'var(--mantine-color-blue-7)',
-            }}
-          />
+          {!disabled && (
+            <div
+              style={{
+                position: 'absolute',
+                left: `calc(${(value?.x ?? 0) * 100}% - ${rem(8)})`,
+                top: `calc(${(value?.y ?? 0) * 100}% - ${rem(8)})`,
+                width: rem(16),
+                height: rem(16),
+                backgroundColor: active
+                  ? 'var(--mantine-color-teal-7)'
+                  : 'var(--mantine-color-blue-7)',
+              }}
+            />
+          )}
         </div>
       </Group>
-      <Text ta="center" mt="sm">
-        Values {value.x} {value.y}
-      </Text>
+      {!disabled && (
+        <Text ta="center" mt="sm">
+          x: {x} y: {y}
+        </Text>
+      )}
     </>
   );
 }
@@ -73,6 +75,11 @@ export default function Settings(): JSX.Element {
     defaultValue: 1,
   });
 
+  const [hasMovingTargetCenter, setHasMovingTargetCenter] = useLocalStorage({
+    key: 'has-moving-target-center',
+    defaultValue: false,
+  });
+
   return (
     <Container>
       <Center>
@@ -81,7 +88,7 @@ export default function Settings(): JSX.Element {
 
           <Space h="xl" />
 
-          <Text size="md">Rounds</Text>
+          <Text size="lg">Rounds</Text>
           <Text size="md" fs="italic">
             The number of guesses per game
           </Text>
@@ -101,7 +108,7 @@ export default function Settings(): JSX.Element {
 
           <Space h="xl" />
 
-          <Text size="md">Round length</Text>
+          <Text size="lg">Round length</Text>
           <Text size="md" fs="italic">
             The amount of time per each round in seconds.
           </Text>
@@ -121,12 +128,33 @@ export default function Settings(): JSX.Element {
 
           <Space h="xl" />
 
-          <Text size="md">Target position</Text>
+          <Text size="lg">Target position</Text>
+
+          <Space h="xl" />
+
+          <Text size="md" fs="italic">
+            Alternate targets
+          </Text>
+
+          <Checkbox
+            defaultChecked
+            label="Alternate the target center"
+            value={hasMovingTargetCenter ? 'checked' : 'unchecked'}
+            onChange={(event) => setHasMovingTargetCenter(event.target.checked)}
+            description={
+              hasMovingTargetCenter
+                ? 'Uncheck this to manually set a target center below'
+                : 'Check this to randomly move target centers'
+            }
+          />
+
+          <Space h="xl" />
+
           <Text size="md" fs="italic">
             Screen location for targets
           </Text>
 
-          <CoordinateBox />
+          <CoordinateBox disabled={hasMovingTargetCenter ?? false} />
         </Flex>
       </Center>
     </Container>

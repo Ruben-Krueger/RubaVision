@@ -73,6 +73,10 @@ export default function End(): JSX.Element {
 
           <Button onClick={() => history.push('/play')}>PLAY AGAIN</Button>
 
+          <Button onClick={() => history.push('/settings')} color="gray">
+            SETTINGS
+          </Button>
+
           <Button
             disabled={data == null}
             onClick={() => downloadResults(nullThrows(data))}
