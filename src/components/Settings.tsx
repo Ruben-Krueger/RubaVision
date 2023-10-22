@@ -36,17 +36,11 @@ function CoordinateBox() {
 
   const disabled = hasMovingTargetCenter;
 
-  console.log(
-    window.localStorage.getItem('has-moving-target-center'),
-    window.localStorage.getItem('target-center')
-  );
-
   return (
     <Container>
       <Checkbox
-        defaultChecked
         label="Alternate the target center"
-        value={false ? 'checked' : 'unchecked'}
+        checked={hasMovingTargetCenter}
         onChange={(event) => setHasMovingTargetCenter(event.target.checked)}
         description={
           hasMovingTargetCenter
