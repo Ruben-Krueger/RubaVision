@@ -15,7 +15,7 @@ import Data from '../types/Data';
 import nullThrows from 'capital-t-null-throws';
 import { DateTime } from 'luxon';
 
-function downloadResults(gameData: Data) {
+function downloadResults(gameData: Data): void {
   const data =
     'data:text/json;charset=utf-8,' +
     encodeURIComponent(JSON.stringify(gameData, undefined, 2));
@@ -30,6 +30,31 @@ function downloadResults(gameData: Data) {
   document.body.appendChild(downloadAnchorNode); // required for firefox
   downloadAnchorNode.click();
   downloadAnchorNode.remove();
+}
+
+function RoundResult({ round }: { round: Round }): JSX.Element {
+  const x = Math.round(round.targetCenter.x);
+  const y = Math.round(round.targetCenter.y);
+
+  return (
+    <Paper key={round.startTimestamp} shadow="xs" p="xl">
+      <Flex>
+        {round.guess === round.answer ? (
+          <IconCheck color="green" />
+        ) : (
+          <IconCircleX color="red" />
+        )}
+        <Space w="md" />
+        <Flex direction="column">
+          <Text>Guess: {round.guess ?? '(none)'}</Text>
+          <Text>Answer: {round.answer}</Text>
+          <Text>
+            ({x}, {y})
+          </Text>
+        </Flex>
+      </Flex>
+    </Paper>
+  );
 }
 
 export default function End(): JSX.Element {
@@ -55,20 +80,7 @@ export default function End(): JSX.Element {
           <Text size="md">Total score: {score} </Text>
 
           {rounds.map((round) => (
-            <Paper key={round.startTimestamp} shadow="xs" p="xl">
-              <Flex>
-                {round.guess === round.answer ? (
-                  <IconCheck color="green" />
-                ) : (
-                  <IconCircleX color="red" />
-                )}
-                <Space w="md" />
-                <Flex direction="column">
-                  <Text>Guess: {round.guess ?? '(none)'}</Text>
-                  <Text>Answer: {round.answer}</Text>
-                </Flex>
-              </Flex>
-            </Paper>
+            <RoundResult round={round} />
           ))}
 
           <Button onClick={() => history.push('/play')}>PLAY AGAIN</Button>
