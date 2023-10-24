@@ -46,7 +46,7 @@ export default function Start() {
         <Flex direction="column">
           <Text size="xl">RubaVision</Text>
 
-          <Paper shadow="xs" p="xl">
+          <Paper shadow="lg" p="xl">
             <Text>Game play:</Text>
             <Text>
               - Black circles will be moving left or right (with random vertical
@@ -63,7 +63,9 @@ export default function Start() {
 
           <Flex gap="md" direction="column">
             <Button onClick={() => history.push('/play')}>START</Button>
-            <Button onClick={() => history.push('/settings')}>SETTINGS</Button>
+            <Button color="gray" onClick={() => history.push('/settings')}>
+              SETTINGS
+            </Button>
           </Flex>
         </Flex>
       </Center>

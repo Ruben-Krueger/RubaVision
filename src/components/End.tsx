@@ -80,7 +80,7 @@ export default function End(): JSX.Element {
           <Text size="md">Total score: {score} </Text>
 
           {rounds.map((round) => (
-            <RoundResult round={round} />
+            <RoundResult round={round} key={round.startTimestamp} />
           ))}
 
           <Button onClick={() => history.push('/play')}>PLAY AGAIN</Button>

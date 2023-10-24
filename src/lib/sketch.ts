@@ -7,24 +7,31 @@ import getLocalStorage from '../util/getLocalStorage';
 let rounds: Round[] = [];
 
 const sketch = (p5: P5) => {
+  const HAS_EMOTIONAL_STIMULI = getLocalStorage('emotional-stimuli', false);
+
   // The time to guess the movement direction after a target is displayed
   const ROUND_INTERVAL_MS = getLocalStorage('round-length', 1) * 1000;
+  const { x, y } = getLocalStorage('target-center', { x: 0, y: 0 });
 
-  let velocity = 1;
-
-  let CURRENT_ROUND_END_MS: number | null = null;
-
+  const HAS_MOVING_TARGETS = getLocalStorage('has-moving-target-center', true);
   const NUMBER_OF_ROUNDS = getLocalStorage('number-rounds', 5);
 
-  const { x, y } = getLocalStorage('target-center', { x: 0, y: 0 });
+  let velocity = 1;
+  let CURRENT_ROUND_END_MS: number | null = null;
   const TARGET_CENTER = { x: x * window.innerWidth, y: y * window.innerHeight };
-  const HAS_MOVING_TARGETS = getLocalStorage('has-moving-target-center', true);
 
   const targets = new Targets(
     p5,
     velocity,
     HAS_MOVING_TARGETS ? null : TARGET_CENTER
   );
+
+  let sadImage: P5.Image;
+  let happyImage: P5.Image;
+
+  p5.preload = () => {
+    sadImage = p5.loadImage('assets/happy-baby.jpg');
+  };
 
   p5.setup = () => {
     p5.createCanvas(window.innerWidth, window.innerHeight);
@@ -66,6 +73,8 @@ const sketch = (p5: P5) => {
   p5.draw = () => {
     p5.background(255);
     drawFocusCircle();
+
+    // p5.image(sadImage, 50, 50);
 
     const now = Date.now();
 

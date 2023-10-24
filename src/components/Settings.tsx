@@ -99,6 +99,11 @@ export default function Settings(): JSX.Element {
     defaultValue: 1,
   });
 
+  const [hasEmotionalStimuli, setHasEmotionalStimuli] = useLocalStorage({
+    key: 'emotional-stimuli',
+    defaultValue: false,
+  });
+
   const history = useHistory();
 
   return (
@@ -152,6 +157,23 @@ export default function Settings(): JSX.Element {
           <Text size="lg">Target position</Text>
 
           <CoordinateBox />
+
+          <Space h="xl" />
+
+          <Text size="lg">Emotional stimuli</Text>
+          <Text size="md" fs="italic">
+            Include emotional stimuli
+          </Text>
+          <Checkbox
+            label="Emotional stimuli"
+            checked={hasEmotionalStimuli}
+            onChange={(event) => setHasEmotionalStimuli(event.target.checked)}
+            description={
+              hasEmotionalStimuli
+                ? 'Uncheck to use moving circles'
+                : 'Check this to use emotional stimuli'
+            }
+          />
 
           <Space h="xl" />
 
