@@ -125,7 +125,7 @@ const sketch = (p5: P5) => {
       }
     }
 
-    targets.draw();
+    targets.draw(round?.answer);
     targets.update();
   };
 

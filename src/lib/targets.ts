@@ -5,6 +5,8 @@ import Position from '../types/Position';
 import getDistance from '../util/getDistance';
 import GameMode from '../types/GameMode';
 import nullThrows from 'capital-t-null-throws';
+import Direction from '../types/Direction';
+import Emotion from '../types/Emotion';
 
 const DOT_COUNT = 20;
 const BOUNDARY_DIAMETER = 200;
@@ -61,17 +63,17 @@ class Targets {
     p5.preload = () => {
       if (this.gameMode !== GameMode.EMOTION) return;
 
-      this.sadImage = p5.loadImage('assets/happy-baby.jpg');
+      this.sadImage = p5.loadImage('assets/sad-baby.PNG');
       this.happyImage = p5.loadImage('assets/happy-baby.jpg');
     };
   }
 
-  draw() {
+  draw(stimuli: Emotion | Direction | undefined) {
     if (this.gameMode === GameMode.STANDARD) {
       this.drawTargets();
       this.drawBoundary();
     } else {
-      this.drawEmotionalStimuli();
+      this.drawEmotionalStimuli(stimuli as Emotion);
     }
   }
 
@@ -87,9 +89,9 @@ class Targets {
     );
   }
 
-  drawEmotionalStimuli() {
+  drawEmotionalStimuli(stimuli: Emotion | undefined) {
     this.p5.image(
-      nullThrows(this.sadImage),
+      nullThrows(stimuli === Emotion.HAPPY ? this.happyImage : this.sadImage),
       this.boundaryPosition.x,
       this.boundaryPosition.y,
       EMOTIONAL_STIMULI_IMAGE_WIDTH,
