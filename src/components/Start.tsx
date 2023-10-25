@@ -7,6 +7,7 @@ import {
   Modal,
   Paper,
   Space,
+  Box,
 } from '@mantine/core';
 import { useHistory } from 'react-router-dom';
 import React from 'react';
@@ -16,6 +17,11 @@ const MODAL_ENABLED = false;
 
 export default function Start() {
   const history = useHistory();
+
+  const [HAS_EMOTIONAL_STIMULI] = useLocalStorage({
+    key: 'emotional-stimuli',
+    defaultValue: false,
+  });
 
   // TODO: fix flashing because local storage waiting
   const [accepted, setHasAccepted] = useLocalStorage({
@@ -46,17 +52,31 @@ export default function Start() {
         <Flex direction="column">
           <Text size="xl">RubaVision</Text>
 
-          <Paper shadow="lg" p="xl">
+          <Paper>
             <Text>Game play:</Text>
-            <Text>
-              - Black circles will be moving left or right (with random vertical
-              motion)
-            </Text>
-            <Text>
-              - Use the left and right arrows to guess whether it is left or
-              right
-            </Text>
+            {HAS_EMOTIONAL_STIMULI ? (
+              <>
+                <Text>- Emotional images (happy or sad) will be displayed</Text>
+                <Text>
+                  - Use the "h" and "s" keys to guess whether the image is happy
+                  (h) or sad (s)
+                </Text>
+              </>
+            ) : (
+              <>
+                <Text>
+                  - Black circles will be moving left or right (with random
+                  vertical motion)
+                </Text>
+                <Text>
+                  - Use the left and right arrows to guess whether it is left or
+                  right
+                </Text>
+              </>
+            )}
+
             <Text>- Click "START" to begin</Text>
+            <Text>- Press "q" to end the game</Text>
           </Paper>
 
           <Space h="lg" />
