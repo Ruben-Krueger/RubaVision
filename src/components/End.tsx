@@ -14,6 +14,7 @@ import { IconCheck, IconCircleX } from '@tabler/icons-react';
 import Data from '../types/Data';
 import nullThrows from 'capital-t-null-throws';
 import { DateTime } from 'luxon';
+import useLogger from '../util/useLogger';
 
 function downloadResults(gameData: Data): void {
   const data =
@@ -69,6 +70,8 @@ export default function End(): JSX.Element {
 
   const score = rounds.filter((r) => r.guess === r.answer).length;
 
+  const logger = useLogger();
+
   return (
     <Container>
       <Center>
@@ -91,7 +94,10 @@ export default function End(): JSX.Element {
 
           <Button
             disabled={data == null}
-            onClick={() => downloadResults(nullThrows(data))}
+            onClick={() => {
+              logger.info({ eventName: 'download' });
+              downloadResults(nullThrows(data));
+            }}
             color="gray"
           >
             DOWNLOAD

@@ -14,6 +14,7 @@ import React, { useState } from 'react';
 import { useMove } from '@mantine/hooks';
 import { useLocalStorage } from '@mantine/hooks';
 import { useHistory } from 'react-router-dom';
+import useLogger from '../util/useLogger';
 
 function CoordinateBox() {
   const width = window.innerWidth / 5;
@@ -105,6 +106,8 @@ export default function Settings(): JSX.Element {
   });
 
   const history = useHistory();
+
+  const logger = useLogger();
 
   return (
     <Container>
