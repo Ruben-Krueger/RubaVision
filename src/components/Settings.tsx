@@ -105,6 +105,11 @@ export default function Settings(): JSX.Element {
     defaultValue: false,
   });
 
+  const [hasCountdown, setHasCountdown] = useLocalStorage({
+    key: 'countdown',
+    defaultValue: false,
+  });
+
   const history = useHistory();
 
   const logger = useLogger();
@@ -114,6 +119,17 @@ export default function Settings(): JSX.Element {
       <Center>
         <Flex direction="column">
           <Text size="xl">Settings</Text>
+
+          <Text size="lg">Countdown</Text>
+          <Text size="md" fs="italic">
+            Include a 3 second countdown before the game begins
+          </Text>
+
+          <Checkbox
+            label="Countdown"
+            checked={hasCountdown}
+            onChange={(event) => setHasCountdown(event.target.checked)}
+          />
 
           <Space h="xl" />
 

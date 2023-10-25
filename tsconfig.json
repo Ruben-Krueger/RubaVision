@@ -17,6 +17,8 @@
     "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
     "noUnusedLocals": false /* Enable error reporting when local variables aren't read. */,
 
+    "strictPropertyInitialization": false,
+
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   }
