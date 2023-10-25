@@ -70,6 +70,7 @@ const sketch = (p5: P5) => {
   p5.keyPressed = () => {
     // End the game using "q"
     if (p5.keyCode === 81) {
+      storeResults(rounds);
       window.location.href = '/end';
     }
 
