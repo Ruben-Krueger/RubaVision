@@ -9,6 +9,7 @@ import {
   rem,
   Checkbox,
   Button,
+  NumberInput,
 } from '@mantine/core';
 import React, { useState } from 'react';
 import { useMove } from '@mantine/hooks';
@@ -124,20 +125,14 @@ export default function Settings(): JSX.Element {
 
           <Text size="lg">Rounds</Text>
           <Text size="md" fs="italic">
-            The number of guesses per game
+            The number of guesses per game (between 1 to 1000)
           </Text>
-          <Slider
+          <NumberInput
+            placeholder="10"
             min={1}
-            max={10}
-            defaultValue={5}
-            label={numberOfRounds}
+            max={1000}
             value={numberOfRounds}
-            onChange={(value) => setNumberOfRounds(value)}
-            marks={[
-              { value: 1, label: '1' },
-              { value: 5, label: '5' },
-              { value: 10, label: '10' },
-            ]}
+            onChange={(v) => setNumberOfRounds(v as number)}
           />
 
           <Space h="xl" />

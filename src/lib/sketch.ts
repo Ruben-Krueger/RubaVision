@@ -6,6 +6,9 @@ import getLocalStorage from '../util/getLocalStorage';
 import GameMode from '../types/GameMode';
 import Direction from '../types/Direction';
 import Emotion from '../types/Emotion';
+import correctBeep from '../sounds/correct.mp3';
+import wrongBeep from '../sounds/wrong.mp3';
+import roundBeep from '../sounds/round.mp3';
 
 let rounds: Round[] = [];
 
@@ -15,6 +18,10 @@ const KEYS_TO_ANSWER: { [key: number]: Direction | Emotion } = {
   83: Emotion.SAD,
   72: Emotion.HAPPY,
 };
+
+const correctSound = new Audio(correctBeep);
+const wrongSound = new Audio(wrongBeep);
+const roundSound = new Audio(roundBeep);
 
 const sketch = (p5: P5) => {
   const HAS_EMOTIONAL_STIMULI = getLocalStorage('emotional-stimuli', false);
@@ -74,7 +81,7 @@ const sketch = (p5: P5) => {
       window.location.href = '/end';
     }
 
-    const guess = KEYS_TO_ANSWER[p5.keyCode];
+    const guess = KEYS_TO_ANSWER[p5.keyCode] ?? null;
 
     const now = Date.now();
 
@@ -85,6 +92,11 @@ const sketch = (p5: P5) => {
     // This overwrites previous guesses
     if (round) {
       round.guess = guess;
+      if (round.answer === guess) {
+        correctSound.play();
+      } else {
+        wrongSound.play();
+      }
     }
   };
 
@@ -124,6 +136,7 @@ const sketch = (p5: P5) => {
       } else {
         targets.reset(newVelocity);
       }
+      roundSound.play();
     }
 
     targets.draw(round?.answer);
