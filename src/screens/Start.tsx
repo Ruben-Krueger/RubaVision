@@ -10,10 +10,9 @@ import {
   Box,
 } from '@mantine/core';
 import { useHistory } from 'react-router-dom';
-import React from 'react';
-import { useLocalStorage } from '@mantine/hooks';
-
-const MODAL_ENABLED = false;
+import React, { useEffect, useState } from 'react';
+import { useLocalStorage, useTimeout } from '@mantine/hooks';
+import { Ping } from '@uiball/loaders';
 
 export default function Start() {
   const history = useHistory();
@@ -23,30 +22,22 @@ export default function Start() {
     defaultValue: false,
   });
 
-  // TODO: fix flashing because local storage waiting
-  const [accepted, setHasAccepted] = useLocalStorage({
-    key: 'accepted',
-    defaultValue: 'false',
+  const [showLoading, setShowLoading] = useState(true);
+
+  const { start, clear } = useTimeout(() => setShowLoading(false), 2000, {
+    autoInvoke: true,
   });
 
-  const hasAccepted = JSON.parse(accepted ?? '') === true;
+  if (showLoading)
+    return (
+      <Center>
+        <Flex>
+          <Ping size={100} speed={2} color="blue" />
+        </Flex>
+      </Center>
+    );
 
-  return MODAL_ENABLED && !hasAccepted ? (
-    <Modal
-      opened={hasAccepted}
-      onClose={() => {}}
-      title="But first! A small warning."
-      centered
-      withCloseButton={false}
-    >
-      <Text>
-        This software is for educational purposes. This software have not been
-        evaluated by the Food and Drug Administration, nor is it intended to
-        diagnose, treat, cure, or prevent any disease.
-      </Text>
-      <Button onClick={() => setHasAccepted('true')}>I accept</Button>
-    </Modal>
-  ) : (
+  return (
     <Container>
       <Center>
         <Flex direction="column">

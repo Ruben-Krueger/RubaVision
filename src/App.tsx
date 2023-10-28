@@ -1,12 +1,12 @@
 import '@mantine/core/styles.css';
 import { MantineProvider, Loader } from '@mantine/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Start from './components/Start';
+import Start from './screens/Start';
 import React, { Suspense } from 'react';
-import Settings from './components/Settings';
-import Canvas from './components/Canvas';
-import PageNotFound from './components/PageNotFound';
-import End from './components/End';
+import Settings from './screens/Settings';
+import Canvas from './screens/Canvas';
+import PageNotFound from './screens/PageNotFound';
+import End from './screens/End';
 import RVErrorBoundary from './components/RVErrorBoundary';
 
 function App(): JSX.Element {
