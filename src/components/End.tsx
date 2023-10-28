@@ -72,6 +72,14 @@ export default function End(): JSX.Element {
 
   const logger = useLogger();
 
+  // const answers = [...new Set(rounds.map((r) => r.answer))];
+
+  // const initial = {};
+
+  // const summary = rounds.reduce((r) => (initial[r.answer] += 1), initial);
+
+  // console.log(summary);
+
   return (
     <Container>
       <Center>

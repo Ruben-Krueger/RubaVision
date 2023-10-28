@@ -7,6 +7,7 @@ import Settings from './components/Settings';
 import Canvas from './components/Canvas';
 import PageNotFound from './components/PageNotFound';
 import End from './components/End';
+import RVErrorBoundary from './components/RVErrorBoundary';
 
 function App(): JSX.Element {
   return (
@@ -18,16 +19,24 @@ function App(): JSX.Element {
               {/* I could never get a component to render in prod at "/" */}
             </Route>
             <Route exact path="/start">
-              <Start />
+              <RVErrorBoundary>
+                <Start />
+              </RVErrorBoundary>
             </Route>
             <Route path="/play">
-              <Canvas />
+              <RVErrorBoundary>
+                <Canvas />
+              </RVErrorBoundary>
             </Route>
             <Route path="/end">
-              <End />
+              <RVErrorBoundary>
+                <End />
+              </RVErrorBoundary>
             </Route>
             <Route path="/settings">
-              <Settings />
+              <RVErrorBoundary>
+                <Settings />
+              </RVErrorBoundary>
             </Route>
             <Route path="*" component={PageNotFound} />
           </Switch>

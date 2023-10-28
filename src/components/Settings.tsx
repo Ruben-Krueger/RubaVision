@@ -26,6 +26,12 @@ function CoordinateBox() {
     defaultValue: { x: 0, y: 0 },
   });
 
+  // TODO(remember to update the parsing)
+  const [values, setValues] = useLocalStorage({
+    key: 'target-center',
+    defaultValue: [{ x: 0, y: 0 }],
+  });
+
   const [hasMovingTargetCenter, setHasMovingTargetCenter] = useLocalStorage({
     key: 'has-moving-target-center',
     defaultValue: true,
@@ -66,18 +72,34 @@ function CoordinateBox() {
           }}
         >
           {!disabled && (
-            <div
-              style={{
-                position: 'absolute',
-                left: `calc(${(value?.x ?? 0) * 100}% - ${rem(8)})`,
-                top: `calc(${(value?.y ?? 0) * 100}% - ${rem(8)})`,
-                width: rem(16),
-                height: rem(16),
-                backgroundColor: active
-                  ? 'var(--mantine-color-teal-7)'
-                  : 'var(--mantine-color-blue-7)',
-              }}
-            />
+            <>
+              <div
+                style={{
+                  position: 'absolute',
+                  left: `calc(${(value?.x ?? 0) * 100}% - ${rem(8)})`,
+                  top: `calc(${(value?.y ?? 0) * 100}% - ${rem(8)})`,
+                  width: rem(16),
+                  height: rem(16),
+                  backgroundColor: active
+                    ? 'var(--mantine-color-teal-7)'
+                    : 'var(--mantine-color-blue-7)',
+                }}
+              />
+              {/* {values?.map((v) => (
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: `calc(${(v?.x ?? 0) * 100}% - ${rem(8)})`,
+                    top: `calc(${(v?.y ?? 0) * 100}% - ${rem(8)})`,
+                    width: rem(16),
+                    height: rem(16),
+                    backgroundColor: active
+                      ? 'var(--mantine-color-teal-7)'
+                      : 'var(--mantine-color-blue-7)',
+                  }}
+                />
+              ))} */}
+            </>
           )}
         </div>
       </Group>
@@ -86,6 +108,9 @@ function CoordinateBox() {
           x: {x} y: {y}
         </Text>
       )}
+
+      {/* <Button color="orange">Add target</Button>
+      <Button color="grey">Remove target</Button> */}
     </Container>
   );
 }
