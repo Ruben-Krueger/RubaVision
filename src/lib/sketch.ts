@@ -104,6 +104,10 @@ const sketch = (p5: P5) => {
     p5.background(255);
     drawFocusCircle();
 
+    if (p5.frameCount === 1) {
+      roundSound.play();
+    }
+
     const now = Date.now();
 
     // Game has ended

@@ -6,6 +6,7 @@ import {
   Text,
   Paper,
   Space,
+  rem,
 } from '@mantine/core';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -15,6 +16,7 @@ import Data from '../types/Data';
 import nullThrows from 'capital-t-null-throws';
 import { DateTime } from 'luxon';
 import useLogger from '../util/useLogger';
+import Position from '../types/Position';
 
 function downloadResults(gameData: Data): void {
   const data =
@@ -72,6 +74,21 @@ export default function End(): JSX.Element {
 
   const logger = useLogger();
 
+  const initial = new Map<string, number>();
+
+  const answers = rounds.reduce((previous, currentRound) => {
+    const prevCount =
+      previous.get(JSON.stringify(currentRound.targetCenter)) ?? 0;
+    return previous.set(
+      JSON.stringify(currentRound.targetCenter),
+      prevCount + 1
+    );
+  }, initial);
+
+  const summary = answers.entries();
+
+  console.log(answers);
+
   // const answers = [...new Set(rounds.map((r) => r.answer))];
 
   // const initial = {};
@@ -90,8 +107,8 @@ export default function End(): JSX.Element {
           )}
           <Text size="md">Total score: {score} </Text>
 
-          {rounds.map((round) => (
-            <RoundResult round={round} key={round.startTimestamp} />
+          {rounds.map((r) => (
+            <RoundResult round={r} />
           ))}
 
           <Button onClick={() => history.push('/play')}>PLAY AGAIN</Button>

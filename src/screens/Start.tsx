@@ -4,15 +4,12 @@ import {
   Text,
   Container,
   Flex,
-  Modal,
   Paper,
   Space,
-  Box,
 } from '@mantine/core';
 import { useHistory } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import { useLocalStorage, useTimeout } from '@mantine/hooks';
-import { Ping } from '@uiball/loaders';
+import React, { useState } from 'react';
+import { useLocalStorage } from '@mantine/hooks';
 
 export default function Start() {
   const history = useHistory();
@@ -22,26 +19,13 @@ export default function Start() {
     defaultValue: false,
   });
 
-  const [showLoading, setShowLoading] = useState(true);
-
-  const { start, clear } = useTimeout(() => setShowLoading(false), 2000, {
-    autoInvoke: true,
-  });
-
-  if (showLoading)
-    return (
-      <Center>
-        <Flex>
-          <Ping size={100} speed={2} color="blue" />
-        </Flex>
-      </Center>
-    );
-
   return (
     <Container>
       <Center>
         <Flex direction="column">
-          <Text size="xl">RubaVision</Text>
+          <Center>
+            <Text size="xl">RubaVision</Text>
+          </Center>
 
           <Paper>
             <Text>Game play:</Text>
