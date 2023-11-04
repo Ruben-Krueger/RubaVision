@@ -131,11 +131,6 @@ export default function Settings(): JSX.Element {
     defaultValue: false,
   });
 
-  const [hasCountdown, setHasCountdown] = useLocalStorage({
-    key: 'countdown',
-    defaultValue: false,
-  });
-
   const history = useHistory();
 
   const logger = useLogger();
