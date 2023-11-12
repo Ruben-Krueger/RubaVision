@@ -85,6 +85,8 @@ export default function End(): JSX.Element {
     );
   }, initial);
 
+  const test = rounds.map((r) => r.answer);
+
   const summary = answers.entries();
 
   console.log(answers);

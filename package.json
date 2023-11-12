@@ -9,6 +9,7 @@
     "@tabler/icons-react": "^2.39.0",
     "capital-t-null-throws": "^2.0.0",
     "d3": "^7.8.5",
+    "immutability-helper": "^3.1.1",
     "luxon": "^3.4.3",
     "p5": "^1.7.0",
     "pino": "^8.16.1",

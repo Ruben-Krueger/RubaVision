@@ -10,37 +10,41 @@ import {
   Checkbox,
   Button,
   NumberInput,
+  Select,
 } from '@mantine/core';
 import React, { useState } from 'react';
-import { useMove } from '@mantine/hooks';
 import { useLocalStorage } from '@mantine/hooks';
 import { useHistory } from 'react-router-dom';
 import useLogger from '../util/useLogger';
+
+import update, { Spec } from 'immutability-helper';
+
+import { Table } from '@mantine/core';
+import nullThrows from 'capital-t-null-throws';
+import Position from '../types/Position';
+import { v4 as uuidv4 } from 'uuid';
+import GameMode from '../types/GameMode';
+import formatGameMode from '../formatters/formatGameMode';
 
 function CoordinateBox() {
   const width = window.innerWidth / 5;
   const height = window.innerHeight / 5;
 
-  const [value, setValue] = useLocalStorage({
-    key: 'target-center',
-    defaultValue: { x: 0, y: 0 },
-  });
-
   // TODO(remember to update the parsing)
   const [values, setValues] = useLocalStorage({
-    key: 'target-center',
-    defaultValue: [{ x: 0, y: 0 }],
+    key: 'target-centers',
+    defaultValue: [] as Position[],
   });
+
+  console.log(values);
 
   const [hasMovingTargetCenter, setHasMovingTargetCenter] = useLocalStorage({
     key: 'has-moving-target-center',
     defaultValue: true,
   });
 
-  const x = Math.round((value?.x ?? 0) * window.innerWidth);
-  const y = Math.round((value?.y ?? 0) * window.innerHeight);
-
-  const { ref, active } = useMove(setValue);
+  // const x = Math.round((value?.x ?? 0) * window.innerWidth);
+  // const y = Math.round((value?.y ?? 0) * window.innerHeight);
 
   const disabled = hasMovingTargetCenter;
 
@@ -63,7 +67,6 @@ function CoordinateBox() {
 
       <Group justify="center">
         <div
-          ref={ref}
           style={{
             width,
             height,
@@ -73,44 +76,87 @@ function CoordinateBox() {
         >
           {!disabled && (
             <>
-              <div
-                style={{
-                  position: 'absolute',
-                  left: `calc(${(value?.x ?? 0) * 100}% - ${rem(8)})`,
-                  top: `calc(${(value?.y ?? 0) * 100}% - ${rem(8)})`,
-                  width: rem(16),
-                  height: rem(16),
-                  backgroundColor: active
-                    ? 'var(--mantine-color-teal-7)'
-                    : 'var(--mantine-color-blue-7)',
-                }}
-              />
-              {/* {values?.map((v) => (
+              {values?.map((v) => (
                 <div
+                  key={v.id ?? `${v.x},${v.y}`}
                   style={{
                     position: 'absolute',
                     left: `calc(${(v?.x ?? 0) * 100}% - ${rem(8)})`,
                     top: `calc(${(v?.y ?? 0) * 100}% - ${rem(8)})`,
                     width: rem(16),
                     height: rem(16),
-                    backgroundColor: active
-                      ? 'var(--mantine-color-teal-7)'
-                      : 'var(--mantine-color-blue-7)',
+                    backgroundColor: 'var(--mantine-color-blue-7)',
                   }}
                 />
-              ))} */}
+              ))}
             </>
           )}
         </div>
       </Group>
-      {!disabled && (
-        <Text ta="center" mt="sm">
-          x: {x} y: {y}
-        </Text>
-      )}
 
-      {/* <Button color="orange">Add target</Button>
-      <Button color="grey">Remove target</Button> */}
+      {!disabled && (
+        <>
+          <Table>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Coordinates</Table.Th>
+                <Table.Th>Action</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {values?.map((value, i) => (
+                <Table.Tr key={value.id}>
+                  <Table.Td>
+                    ({value.x}, {value.y})
+                  </Table.Td>
+                  <Table.Td>
+                    <Button
+                      color="red"
+                      onClick={() => {
+                        console.log('before', values);
+                        // setValues((previous) => {
+                        //   const newValue = previous.slice(i, ) + previous.slice(i, i1);
+                        //   console.log('new value', newValue);
+                        //   return newValue;
+                        // });
+                        // setValues((previousValues) =>
+                        //   update(previousValues, {
+                        //     items: { $splice: [[i, 1]] } as Spec<
+                        //       Position,
+                        //       never
+                        //     >,
+                        //   })
+                        // );
+
+                        // setValues((previousValues) => {
+                        //   const start = Math.min(0, i - 1);
+                        //   return previousValues
+                        //     .slice(0, start)
+                        //     .concat(
+                        //       previousValues.slice(i + 1, previousValues.length)
+                        //     );
+                        // });
+                      }}
+                    >
+                      ×
+                    </Button>
+                  </Table.Td>
+                </Table.Tr>
+              ))}
+            </Table.Tbody>
+          </Table>
+          <Button
+            onClick={() => {
+              const newValue = nullThrows(
+                update(values, { $push: [{ x: 0, y: 0, id: uuidv4() }] })
+              );
+              setValues(newValue);
+            }}
+          >
+            ADD
+          </Button>
+        </>
+      )}
     </Container>
   );
 }
@@ -131,6 +177,11 @@ export default function Settings(): JSX.Element {
     defaultValue: false,
   });
 
+  const [currentGameMode, setCurrentGameMode] = useLocalStorage({
+    key: 'game-mode',
+    defaultValue: GameMode.STANDARD,
+  });
+
   const history = useHistory();
 
   const logger = useLogger();
@@ -140,6 +191,7 @@ export default function Settings(): JSX.Element {
       <Center>
         <Flex direction="column">
           <Text size="xl">Settings</Text>
+          <Text size="md">Changes are automatically saved</Text>
 
           <Space h="xl" />
 
@@ -183,24 +235,27 @@ export default function Settings(): JSX.Element {
 
           <Space h="xl" />
 
-          <Text size="lg">Emotional stimuli</Text>
-          <Text size="md" fs="italic">
-            Include emotional stimuli
-          </Text>
-          <Checkbox
-            label="Emotional stimuli"
-            checked={hasEmotionalStimuli}
-            onChange={(event) => setHasEmotionalStimuli(event.target.checked)}
-            description={
-              hasEmotionalStimuli
-                ? 'Uncheck to use moving circles'
-                : 'Check this to use emotional stimuli'
-            }
+          <Text size="lg">Game modes</Text>
+          <Select
+            label={formatGameMode(
+              currentGameMode ?? GameMode.STANDARD,
+              'description'
+            )}
+            placeholder="Standard"
+            data={Object.keys(GameMode).map((mode) =>
+              formatGameMode(mode as GameMode, 'title')
+            )}
+            onChange={(mode) => {
+              if (mode == null) return;
+              setCurrentGameMode(mode as GameMode);
+            }}
           />
 
           <Space h="xl" />
 
-          <Button onClick={() => history.push('/play')}>PLAY</Button>
+          <Button onClick={() => history.push('/play')} color="gray">
+            PLAY
+          </Button>
         </Flex>
       </Center>
     </Container>
