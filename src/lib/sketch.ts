@@ -32,20 +32,23 @@ const sketch = (p5: P5) => {
 
   // The time to guess the movement direction after a target is displayed
   const ROUND_INTERVAL_MS = getLocalStorage('round-length', 1) * 1000;
-  const { x, y } = getLocalStorage('target-center', { x: 0, y: 0 });
 
-  const HAS_MOVING_TARGETS = getLocalStorage('has-moving-target-center', true);
+  const targetCenters = getLocalStorage('target-centers', [{ x: 0, y: 0 }]);
+
+  const HAS_RANDOMLY_MOVING_TARGET_CENTERS = getLocalStorage(
+    'has-moving-target-center',
+    true
+  );
   const NUMBER_OF_ROUNDS = getLocalStorage('number-rounds', 5);
 
   let velocity = 1;
   let CURRENT_ROUND_END_MS: number | null = null;
-  const TARGET_CENTER = { x: x * window.innerWidth, y: y * window.innerHeight };
 
   const targets = new Targets(
     p5,
     GAME_MODE,
     velocity,
-    HAS_MOVING_TARGETS ? null : TARGET_CENTER
+    HAS_RANDOMLY_MOVING_TARGET_CENTERS ? null : targetCenters
   );
 
   p5.setup = () => {
@@ -135,11 +138,12 @@ const sketch = (p5: P5) => {
           ? -1
           : 1;
 
-      if (HAS_MOVING_TARGETS) {
-        targets.moveTargets(newVelocity);
-      } else {
+      if (!HAS_RANDOMLY_MOVING_TARGET_CENTERS) {
         targets.reset(newVelocity);
+      } else {
+        targets.moveTargets(newVelocity);
       }
+
       roundSound.play();
     }
 

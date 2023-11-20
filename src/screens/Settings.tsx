@@ -11,6 +11,7 @@ import {
   Button,
   NumberInput,
   Select,
+  Input,
 } from '@mantine/core';
 import React, { useState } from 'react';
 import { useLocalStorage } from '@mantine/hooks';
@@ -36,28 +37,26 @@ function CoordinateBox() {
     defaultValue: [] as Position[],
   });
 
+  const [hasRandomMovingTargetCenter, setHasRandomMovingTargetCenter] =
+    useLocalStorage({
+      key: 'has-moving-target-center',
+      defaultValue: true,
+    });
+
+  const disabled = hasRandomMovingTargetCenter;
+
   console.log(values);
-
-  const [hasMovingTargetCenter, setHasMovingTargetCenter] = useLocalStorage({
-    key: 'has-moving-target-center',
-    defaultValue: true,
-  });
-
-  // const x = Math.round((value?.x ?? 0) * window.innerWidth);
-  // const y = Math.round((value?.y ?? 0) * window.innerHeight);
-
-  const disabled = hasMovingTargetCenter;
 
   return (
     <Container>
       <Checkbox
         label="Alternate the target center"
-        checked={hasMovingTargetCenter}
+        checked={hasRandomMovingTargetCenter}
         onChange={(event) => {
-          setHasMovingTargetCenter(event.target.checked);
+          setHasRandomMovingTargetCenter(event.target.checked);
         }}
         description={
-          hasMovingTargetCenter
+          hasRandomMovingTargetCenter
             ? 'Uncheck this to manually set a target center below'
             : 'Check this to randomly move target centers'
         }
@@ -81,8 +80,8 @@ function CoordinateBox() {
                   key={v.id ?? `${v.x},${v.y}`}
                   style={{
                     position: 'absolute',
-                    left: `calc(${(v?.x ?? 0) * 100}% - ${rem(8)})`,
-                    top: `calc(${(v?.y ?? 0) * 100}% - ${rem(8)})`,
+                    left: `calc(${v?.x / 5 ?? 0}% - ${rem(8)})`,
+                    top: `calc(${v?.y / 5 ?? 0}% - ${rem(8)})`,
                     width: rem(16),
                     height: rem(16),
                     backgroundColor: 'var(--mantine-color-blue-7)',
@@ -99,43 +98,57 @@ function CoordinateBox() {
           <Table>
             <Table.Thead>
               <Table.Tr>
-                <Table.Th>Coordinates</Table.Th>
+                <Table.Th>Color</Table.Th>
+
+                <Table.Th>Coordinates (x,y)</Table.Th>
                 <Table.Th>Action</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
               {values?.map((value, i) => (
                 <Table.Tr key={value.id}>
+                  <Table.Td>foo</Table.Td>
                   <Table.Td>
-                    ({value.x}, {value.y})
+                    <Flex>
+                      <NumberInput
+                        value={value.x}
+                        onChange={(newX) => {
+                          setValues((previous) => {
+                            const array = [...previous];
+                            array[i].x =
+                              typeof newX === 'string' ? parseInt(newX) : newX;
+
+                            return array;
+                          });
+                        }}
+                        hideControls
+                        allowNegative={false}
+                      />
+                      <NumberInput
+                        value={value.y}
+                        onChange={(newY) => {
+                          setValues((previous) => {
+                            const array = [...previous];
+                            array[i].y =
+                              typeof newY === 'string' ? parseInt(newY) : newY;
+
+                            return array;
+                          });
+                        }}
+                        allowNegative={false}
+                        hideControls
+                      />
+                    </Flex>
                   </Table.Td>
                   <Table.Td>
                     <Button
                       color="red"
                       onClick={() => {
-                        console.log('before', values);
-                        // setValues((previous) => {
-                        //   const newValue = previous.slice(i, ) + previous.slice(i, i1);
-                        //   console.log('new value', newValue);
-                        //   return newValue;
-                        // });
-                        // setValues((previousValues) =>
-                        //   update(previousValues, {
-                        //     items: { $splice: [[i, 1]] } as Spec<
-                        //       Position,
-                        //       never
-                        //     >,
-                        //   })
-                        // );
-
-                        // setValues((previousValues) => {
-                        //   const start = Math.min(0, i - 1);
-                        //   return previousValues
-                        //     .slice(0, start)
-                        //     .concat(
-                        //       previousValues.slice(i + 1, previousValues.length)
-                        //     );
-                        // });
+                        setValues((previous) => {
+                          const array = [...previous];
+                          array.splice(i, 1);
+                          return array;
+                        });
                       }}
                     >
                       ×
@@ -241,10 +254,14 @@ export default function Settings(): JSX.Element {
               currentGameMode ?? GameMode.STANDARD,
               'description'
             )}
-            placeholder="Standard"
-            data={Object.keys(GameMode).map((mode) =>
-              formatGameMode(mode as GameMode, 'title')
+            placeholder={formatGameMode(
+              currentGameMode ?? GameMode.STANDARD,
+              'title'
             )}
+            data={Object.keys(GameMode).map((mode) => ({
+              label: formatGameMode(mode as GameMode, 'title'),
+              value: mode,
+            }))}
             onChange={(mode) => {
               if (mode == null) return;
               setCurrentGameMode(mode as GameMode);

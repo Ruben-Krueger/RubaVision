@@ -39,16 +39,26 @@ class Targets {
   sadImage: P5.Image | null;
   happyImage: P5.Image | null;
 
+  targetCenters: Position[] | null;
+
+  targetIndex: number;
+
   constructor(
     p5: P5,
     gameMode: GameMode,
     velocity: number,
-    targetCenter?: Position | null,
+    targetCenters?: Position[] | null,
     jitter = 5
   ) {
     this.p5 = p5;
 
-    this.boundaryPosition = targetCenter ?? getNewBoundaryPosition();
+    if (targetCenters) {
+      this.boundaryPosition = targetCenters[0];
+      this.targetCenters = targetCenters;
+      this.targetIndex = 0;
+    } else {
+      this.boundaryPosition = getNewBoundaryPosition();
+    }
 
     this.positions = Array.from({ length: DOT_COUNT }, () =>
       getInitialTargetPosition(this.boundaryPosition)
@@ -121,12 +131,22 @@ class Targets {
     );
   }
 
+  moveCenter(newPosition: Position) {
+    this.boundaryPosition = newPosition;
+  }
+
   moveTargets(newDirection?: number | null) {
     if (newDirection) {
       this.velocity = newDirection;
     }
 
-    this.boundaryPosition = getNewBoundaryPosition();
+    if (this.targetCenters) {
+      this.targetIndex = this.targetIndex + 1;
+      this.boundaryPosition =
+        this.targetCenters[this.targetIndex % this.targetCenters.length];
+    } else {
+      this.boundaryPosition = getNewBoundaryPosition();
+    }
 
     if (this.gameMode === GameMode.STANDARD) {
       this.positions = Array.from({ length: DOT_COUNT }, () =>
