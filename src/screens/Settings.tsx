@@ -18,7 +18,7 @@ import { useLocalStorage } from '@mantine/hooks';
 import { useHistory } from 'react-router-dom';
 import useLogger from '../util/useLogger';
 
-import update, { Spec } from 'immutability-helper';
+import update from 'immutability-helper';
 
 import { Table } from '@mantine/core';
 import nullThrows from 'capital-t-null-throws';
@@ -30,8 +30,8 @@ import formatGameMode from '../formatters/formatGameMode';
 function CoordinateBox() {
   const width = window.innerWidth / 5;
   const height = window.innerHeight / 5;
+  console.log(width);
 
-  // TODO(remember to update the parsing)
   const [values, setValues] = useLocalStorage({
     key: 'target-centers',
     defaultValue: [] as Position[],
@@ -45,7 +45,16 @@ function CoordinateBox() {
 
   const disabled = hasRandomMovingTargetCenter;
 
-  console.log(values);
+  const formatColor = (color: string) => `--mantine-color-${color}-8`;
+
+  const colors = [
+    formatColor('blue'),
+    formatColor('red'),
+    formatColor('green'),
+    formatColor('yellow'),
+    formatColor('orange'),
+    formatColor('pink'),
+  ];
 
   return (
     <Container>
@@ -75,7 +84,7 @@ function CoordinateBox() {
         >
           {!disabled && (
             <>
-              {values?.map((v) => (
+              {values?.map((v, i) => (
                 <div
                   key={v.id ?? `${v.x},${v.y}`}
                   style={{
@@ -84,7 +93,7 @@ function CoordinateBox() {
                     top: `calc(${v?.y / 5 ?? 0}% - ${rem(8)})`,
                     width: rem(16),
                     height: rem(16),
-                    backgroundColor: 'var(--mantine-color-blue-7)',
+                    backgroundColor: `var(${colors[i]})`,
                   }}
                 />
               ))}
@@ -98,7 +107,7 @@ function CoordinateBox() {
           <Table>
             <Table.Thead>
               <Table.Tr>
-                <Table.Th>Color</Table.Th>
+                <Table.Th>Target</Table.Th>
 
                 <Table.Th>Coordinates (x,y)</Table.Th>
                 <Table.Th>Action</Table.Th>
@@ -107,7 +116,15 @@ function CoordinateBox() {
             <Table.Tbody>
               {values?.map((value, i) => (
                 <Table.Tr key={value.id}>
-                  <Table.Td>foo</Table.Td>
+                  <Table.Td>
+                    <div
+                      style={{
+                        width: rem(16),
+                        height: rem(16),
+                        backgroundColor: `var(${colors[i]})`,
+                      }}
+                    />
+                  </Table.Td>
                   <Table.Td>
                     <Flex>
                       <NumberInput
@@ -249,7 +266,8 @@ export default function Settings(): JSX.Element {
           <Space h="xl" />
 
           <Text size="lg">Game modes</Text>
-          <Select
+          <Text>Coming soon!</Text>
+          {/* <Select
             label={formatGameMode(
               currentGameMode ?? GameMode.STANDARD,
               'description'
@@ -266,7 +284,7 @@ export default function Settings(): JSX.Element {
               if (mode == null) return;
               setCurrentGameMode(mode as GameMode);
             }}
-          />
+          /> */}
 
           <Space h="xl" />
 

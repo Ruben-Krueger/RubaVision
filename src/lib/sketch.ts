@@ -78,6 +78,16 @@ const sketch = (p5: P5) => {
   };
 
   p5.keyPressed = () => {
+    // Pause the game using "delete"
+    if (p5.keyCode === 8) {
+      p5.noLoop();
+    }
+
+    // Resume the game using "backspace"
+    if (p5.keyCode === 13) {
+      p5.loop();
+    }
+
     // End the game using "q"
     if (p5.keyCode === 81) {
       storeResults(rounds);
@@ -138,11 +148,7 @@ const sketch = (p5: P5) => {
           ? -1
           : 1;
 
-      if (!HAS_RANDOMLY_MOVING_TARGET_CENTERS) {
-        targets.reset(newVelocity);
-      } else {
-        targets.moveTargets(newVelocity);
-      }
+      targets.moveTargets(newVelocity);
 
       roundSound.play();
     }

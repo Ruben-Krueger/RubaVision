@@ -121,16 +121,6 @@ class Targets {
     if (this.gameMode === GameMode.STANDARD) this.updateTargets();
   }
 
-  reset(newDirection: number | null) {
-    if (newDirection) {
-      this.velocity = newDirection;
-    }
-
-    this.positions = Array.from({ length: DOT_COUNT }, () =>
-      getInitialTargetPosition(this.boundaryPosition)
-    );
-  }
-
   moveCenter(newPosition: Position) {
     this.boundaryPosition = newPosition;
   }
@@ -141,9 +131,11 @@ class Targets {
     }
 
     if (this.targetCenters) {
+      console.log('here');
       this.targetIndex = this.targetIndex + 1;
       this.boundaryPosition =
         this.targetCenters[this.targetIndex % this.targetCenters.length];
+      console.log(this.boundaryPosition);
     } else {
       this.boundaryPosition = getNewBoundaryPosition();
     }
