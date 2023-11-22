@@ -131,11 +131,10 @@ class Targets {
     }
 
     if (this.targetCenters) {
-      console.log('here');
       this.targetIndex = this.targetIndex + 1;
+
       this.boundaryPosition =
         this.targetCenters[this.targetIndex % this.targetCenters.length];
-      console.log(this.boundaryPosition);
     } else {
       this.boundaryPosition = getNewBoundaryPosition();
     }

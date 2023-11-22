@@ -30,6 +30,7 @@ import formatGameMode from '../formatters/formatGameMode';
 function CoordinateBox() {
   const width = window.innerWidth / 5;
   const height = window.innerHeight / 5;
+  console.log(window.innerWidth);
   console.log(width);
 
   const [values, setValues] = useLocalStorage({
@@ -55,6 +56,8 @@ function CoordinateBox() {
     formatColor('orange'),
     formatColor('pink'),
   ];
+
+  console.log(values);
 
   return (
     <Container>
@@ -89,8 +92,12 @@ function CoordinateBox() {
                   key={v.id ?? `${v.x},${v.y}`}
                   style={{
                     position: 'absolute',
-                    left: `calc(${v?.x / 5 ?? 0}% - ${rem(8)})`,
-                    top: `calc(${v?.y / 5 ?? 0}% - ${rem(8)})`,
+                    left: `calc(${
+                      (v?.x / window.innerWidth ?? 0) * 100
+                    }% - ${rem(8)})`,
+                    top: `calc(${
+                      (v?.y / window.innerHeight ?? 0) * 100
+                    }% - ${rem(8)})`,
                     width: rem(16),
                     height: rem(16),
                     backgroundColor: `var(${colors[i]})`,
@@ -263,6 +270,22 @@ export default function Settings(): JSX.Element {
 
           <CoordinateBox />
 
+          <Space h="xl" />
+
+          <Text size="lg">Emotional stimuli</Text>
+          <Text size="md" fs="italic">
+            Include emotional stimuli
+          </Text>
+          <Checkbox
+            label="Emotional stimuli"
+            checked={hasEmotionalStimuli}
+            onChange={(event) => setHasEmotionalStimuli(event.target.checked)}
+            description={
+              hasEmotionalStimuli
+                ? 'Uncheck to use moving circles'
+                : 'Check this to use emotional stimuli'
+            }
+          />
           <Space h="xl" />
 
           <Text size="lg">Game modes</Text>
