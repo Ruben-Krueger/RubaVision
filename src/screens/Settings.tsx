@@ -30,8 +30,6 @@ import formatGameMode from '../formatters/formatGameMode';
 function CoordinateBox() {
   const width = window.innerWidth / 5;
   const height = window.innerHeight / 5;
-  console.log(window.innerWidth);
-  console.log(width);
 
   const [values, setValues] = useLocalStorage({
     key: 'target-centers',
