@@ -40,7 +40,6 @@ class Targets {
   happyImage: P5.Image | null;
 
   targetCenters: Position[] | null;
-
   targetIndex: number;
 
   constructor(
@@ -82,13 +81,15 @@ class Targets {
     if (this.gameMode === GameMode.STANDARD) {
       this.drawTargets();
       this.drawBoundary();
-    } else {
+    } else if (this.gameMode === GameMode.EMOTION) {
       this.drawEmotionalStimuli(stimuli as Emotion);
+    } else if (this.gameMode === GameMode.STATIC_COLORS) {
+    } else if (this.gameMode === GameMode.STATIC_SHAPES) {
     }
   }
 
   getTargetCenter(): Position {
-    return { x: this.boundaryPosition.x, y: this.boundaryPosition.y };
+    return this.targetCenters?.[this.targetIndex] ?? this.boundaryPosition;
   }
 
   drawBoundary() {
@@ -100,8 +101,12 @@ class Targets {
   }
 
   drawEmotionalStimuli(stimuli: Emotion | undefined) {
+    const image = nullThrows(
+      stimuli === Emotion.HAPPY ? this.happyImage : this.sadImage
+    );
+
     this.p5.image(
-      nullThrows(stimuli === Emotion.HAPPY ? this.happyImage : this.sadImage),
+      image,
       this.boundaryPosition.x,
       this.boundaryPosition.y,
       EMOTIONAL_STIMULI_IMAGE_WIDTH,
@@ -130,6 +135,7 @@ class Targets {
       this.velocity = newDirection;
     }
 
+    // Move the target center
     if (this.targetCenters) {
       this.targetIndex = this.targetIndex + 1;
 

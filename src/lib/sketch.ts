@@ -66,6 +66,7 @@ const sketch = (p5: P5) => {
       const answer = Math.random() > 0.5 ? elements[0] : elements[1];
 
       const previousEnd = rounds[i - 1]?.endTimestamp ?? now;
+
       rounds.push({
         index: i,
         startTimestamp: previousEnd,
@@ -138,17 +139,17 @@ const sketch = (p5: P5) => {
       (r) => now > r.startTimestamp && now < r.endTimestamp
     );
 
+    // Next round
     if (now > CURRENT_ROUND_END_MS) {
       CURRENT_ROUND_END_MS = now + ROUND_INTERVAL_MS;
 
-      const newVelocity =
-        GAME_MODE === GameMode.EMOTION
-          ? null
-          : round?.answer === Direction.LEFT
-          ? -1
-          : 1;
+      const direction = round?.answer === Direction.LEFT ? -1 : 1;
+
+      const newVelocity = GAME_MODE === GameMode.STANDARD ? direction : null;
 
       targets.moveTargets(newVelocity);
+
+      if (round) round.targetCenter = targets.getTargetCenter();
 
       roundSound.play();
     }

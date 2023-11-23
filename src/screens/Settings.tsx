@@ -55,8 +55,6 @@ function CoordinateBox() {
     formatColor('pink'),
   ];
 
-  console.log(values);
-
   return (
     <Container>
       <Checkbox
