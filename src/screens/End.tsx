@@ -17,7 +17,7 @@ import Data from '../types/Data';
 import nullThrows from 'capital-t-null-throws';
 import { DateTime } from 'luxon';
 import useLogger from '../util/useLogger';
-import _ from 'lodash';
+import _, { sum } from 'lodash';
 
 function downloadResults(gameData: Data): void {
   const data =
@@ -37,13 +37,20 @@ function downloadResults(gameData: Data): void {
 }
 
 function RoundResult({ rounds }: { rounds: Round[] }): JSX.Element {
-  const correct = rounds.filter((r) => r.answer === r.guess).length;
+  const results = _.groupBy(rounds, (r) => r.answer);
 
-  const results = _.groupBy(rounds, (r) => typeof r.answer);
+  const summary = Object.entries(results);
 
-  console.log(results);
-
-  return <Table.Td>{correct}</Table.Td>;
+  return (
+    <Table.Td>
+      {summary.map(([answer, rounds]) => (
+        <div key={answer}>
+          {answer}: {rounds.filter((r) => r.guess === answer).length}/
+          {rounds.length}
+        </div>
+      ))}
+    </Table.Td>
+  );
 }
 
 export default function End(): JSX.Element {
@@ -79,7 +86,7 @@ export default function End(): JSX.Element {
             <Table.Thead>
               <Table.Tr>
                 <Table.Th>Coordinates</Table.Th>
-                <Table.Th>Score</Table.Th>
+                <Table.Th>Result</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
