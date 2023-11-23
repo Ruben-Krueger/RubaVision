@@ -7,6 +7,7 @@ import {
   Paper,
   Space,
   rem,
+  Table,
 } from '@mantine/core';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -16,7 +17,7 @@ import Data from '../types/Data';
 import nullThrows from 'capital-t-null-throws';
 import { DateTime } from 'luxon';
 import useLogger from '../util/useLogger';
-import Position from '../types/Position';
+import _ from 'lodash';
 
 function downloadResults(gameData: Data): void {
   const data =
@@ -35,29 +36,14 @@ function downloadResults(gameData: Data): void {
   downloadAnchorNode.remove();
 }
 
-function RoundResult({ round }: { round: Round }): JSX.Element {
-  const x = Math.round(round.targetCenter.x);
-  const y = Math.round(round.targetCenter.y);
+function RoundResult({ rounds }: { rounds: Round[] }): JSX.Element {
+  const correct = rounds.filter((r) => r.answer === r.guess).length;
 
-  return (
-    <Paper key={round.startTimestamp} shadow="xs" p="xl">
-      <Flex>
-        {round.guess === round.answer ? (
-          <IconCheck color="green" />
-        ) : (
-          <IconCircleX color="red" />
-        )}
-        <Space w="md" />
-        <Flex direction="column">
-          <Text>Guess: {round.guess ?? '(none)'}</Text>
-          <Text>Answer: {round.answer}</Text>
-          <Text>
-            ({x}, {y})
-          </Text>
-        </Flex>
-      </Flex>
-    </Paper>
-  );
+  const results = _.groupBy(rounds, (r) => typeof r.answer);
+
+  console.log(results);
+
+  return <Table.Td>{correct}</Table.Td>;
 }
 
 export default function End(): JSX.Element {
@@ -74,30 +60,10 @@ export default function End(): JSX.Element {
 
   const logger = useLogger();
 
-  const initial = new Map<string, number>();
-
-  const answers = rounds.reduce((previous, currentRound) => {
-    const prevCount =
-      previous.get(JSON.stringify(currentRound.targetCenter)) ?? 0;
-    return previous.set(
-      JSON.stringify(currentRound.targetCenter),
-      prevCount + 1
-    );
-  }, initial);
-
-  const test = rounds.map((r) => r.answer);
-
-  const summary = answers.entries();
-
-  console.log(answers);
-
-  // const answers = [...new Set(rounds.map((r) => r.answer))];
-
-  // const initial = {};
-
-  // const summary = rounds.reduce((r) => (initial[r.answer] += 1), initial);
-
-  // console.log(summary);
+  const results = _.groupBy(rounds, (r) => [
+    r.targetCenter.x,
+    r.targetCenter.y,
+  ]);
 
   return (
     <Container>
@@ -109,9 +75,22 @@ export default function End(): JSX.Element {
           )}
           <Text size="md">Total score: {score} </Text>
 
-          {rounds.map((r) => (
-            <RoundResult round={r} />
-          ))}
+          <Table>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Coordinates</Table.Th>
+                <Table.Th>Score</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {Object.entries(results).map(([coordinates, rounds]) => (
+                <Table.Tr key={coordinates}>
+                  <Table.Td>{coordinates}</Table.Td>
+                  <RoundResult rounds={rounds} />
+                </Table.Tr>
+              ))}
+            </Table.Tbody>
+          </Table>
 
           <Button onClick={() => history.push('/play')}>PLAY AGAIN</Button>
 
