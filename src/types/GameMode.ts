@@ -1,8 +1,8 @@
 // standard = circles
 enum GameMode {
   EMOTION = 'EMOTION',
-  STATIC_COLORS = 'STATIC_COLORS',
-  STATIC_SHAPES = 'STATIC_SHAPES',
+  COLORS = 'COLORS',
+  SHAPES = 'SHAPES',
   STANDARD = 'STANDARD',
 }
 

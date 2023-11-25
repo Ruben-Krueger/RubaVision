@@ -7,6 +7,9 @@ import GameMode from '../types/GameMode';
 import nullThrows from 'capital-t-null-throws';
 import Direction from '../types/Direction';
 import Emotion from '../types/Emotion';
+import Answer from '../types/Answer';
+import Shape from '../types/Shape';
+import Color from '../types/Color';
 
 const DOT_COUNT = 20;
 const BOUNDARY_DIAMETER = 200;
@@ -77,15 +80,59 @@ class Targets {
     };
   }
 
-  draw(stimuli: Emotion | Direction | undefined) {
+  draw(stimuli: Answer) {
     if (this.gameMode === GameMode.STANDARD) {
       this.drawTargets();
       this.drawBoundary();
     } else if (this.gameMode === GameMode.EMOTION) {
-      this.drawEmotionalStimuli(stimuli as Emotion);
-    } else if (this.gameMode === GameMode.STATIC_COLORS) {
-    } else if (this.gameMode === GameMode.STATIC_SHAPES) {
+      // I know this is hacky but I don't have a reviewer to require this to be better ha
+      this.drawEmotionalStimuli(stimuli as unknown as Emotion);
+    } else if (this.gameMode === GameMode.COLORS) {
+      this.drawColors(stimuli as unknown as Color);
+    } else if (this.gameMode === GameMode.SHAPES) {
+      this.drawShapes(stimuli as unknown as Shape);
     }
+  }
+
+  drawColors(stimuli: Color) {
+    this.p5.fill(
+      stimuli === Color.GREEN
+        ? 'green'
+        : stimuli === Color.RED
+        ? 'red'
+        : 'yellow'
+    );
+    this.p5.noStroke();
+    this.p5.circle(this.boundaryPosition.x, this.boundaryPosition.y, 60);
+    this.p5.noFill();
+  }
+
+  drawShapes(stimuli: Shape) {
+    this.p5.fill(51);
+    switch (stimuli) {
+      case Shape.CIRCLE:
+        this.p5.circle(this.boundaryPosition.x, this.boundaryPosition.y, 60);
+        break;
+      case Shape.TRIANGLE:
+        this.p5.triangle(
+          this.boundaryPosition.x - 30,
+          this.boundaryPosition.y + 30,
+          this.boundaryPosition.x + 30,
+          this.boundaryPosition.y + 30,
+          this.boundaryPosition.x,
+          this.boundaryPosition.y - 30
+        );
+        break;
+      case Shape.SQUARE:
+        this.p5.rect(
+          this.boundaryPosition.x - 60 / 2,
+          this.boundaryPosition.y - 60 / 2,
+          60,
+          60
+        );
+        break;
+    }
+    this.p5.noFill();
   }
 
   getTargetCenter(): Position {
@@ -100,7 +147,7 @@ class Targets {
     );
   }
 
-  drawEmotionalStimuli(stimuli: Emotion | undefined) {
+  drawEmotionalStimuli(stimuli: Emotion) {
     const image = nullThrows(
       stimuli === Emotion.HAPPY ? this.happyImage : this.sadImage
     );
@@ -145,6 +192,7 @@ class Targets {
       this.boundaryPosition = getNewBoundaryPosition();
     }
 
+    // Populate circles
     if (this.gameMode === GameMode.STANDARD) {
       this.positions = Array.from({ length: DOT_COUNT }, () =>
         getInitialTargetPosition(this.boundaryPosition)

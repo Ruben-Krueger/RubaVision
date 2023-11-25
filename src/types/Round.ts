@@ -1,13 +1,12 @@
-import Direction from './Direction';
-import Emotion from './Emotion';
 import Position from './Position';
+import Answer from './Answer';
 
 type Round = {
   index: number;
   startTimestamp: number;
   endTimestamp: number;
-  guess: Direction | Emotion | null;
-  answer: Direction | Emotion;
+  guess: Answer | null;
+  answer: Answer;
   targetCenter: Position;
 };
 

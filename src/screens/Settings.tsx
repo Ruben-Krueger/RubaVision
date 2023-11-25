@@ -81,6 +81,11 @@ function CoordinateBox() {
             position: 'relative',
           }}
         >
+          <p style={{ position: 'absolute', left: -20, top: -40 }}>0,0</p>
+          <p style={{ position: 'absolute', left: width, top: height }}>
+            {window.innerWidth},{window.innerHeight}
+          </p>
+
           {!disabled && (
             <>
               {values?.map((v, i) => (
@@ -104,6 +109,8 @@ function CoordinateBox() {
           )}
         </div>
       </Group>
+
+      <Space h="xl" />
 
       {!disabled && (
         <>
@@ -143,6 +150,7 @@ function CoordinateBox() {
                         }}
                         hideControls
                         allowNegative={false}
+                        max={window.innerWidth}
                       />
                       <NumberInput
                         value={value.y}
@@ -155,7 +163,8 @@ function CoordinateBox() {
                             return array;
                           });
                         }}
-                        allowNegative={false}
+                        min={0}
+                        max={window.innerHeight}
                         hideControls
                       />
                     </Flex>
@@ -203,11 +212,6 @@ export default function Settings(): JSX.Element {
   const [roundLength, setRoundLength] = useLocalStorage({
     key: 'round-length',
     defaultValue: 1,
-  });
-
-  const [hasEmotionalStimuli, setHasEmotionalStimuli] = useLocalStorage({
-    key: 'emotional-stimuli',
-    defaultValue: false,
   });
 
   const [currentGameMode, setCurrentGameMode] = useLocalStorage({
@@ -268,25 +272,8 @@ export default function Settings(): JSX.Element {
 
           <Space h="xl" />
 
-          <Text size="lg">Emotional stimuli</Text>
-          <Text size="md" fs="italic">
-            Include emotional stimuli
-          </Text>
-          <Checkbox
-            label="Emotional stimuli"
-            checked={hasEmotionalStimuli}
-            onChange={(event) => setHasEmotionalStimuli(event.target.checked)}
-            description={
-              hasEmotionalStimuli
-                ? 'Uncheck to use moving circles'
-                : 'Check this to use emotional stimuli'
-            }
-          />
-          <Space h="xl" />
-
           <Text size="lg">Game modes</Text>
-          <Text>Coming soon!</Text>
-          {/* <Select
+          <Select
             label={formatGameMode(
               currentGameMode ?? GameMode.STANDARD,
               'description'
@@ -303,7 +290,14 @@ export default function Settings(): JSX.Element {
               if (mode == null) return;
               setCurrentGameMode(mode as GameMode);
             }}
-          /> */}
+          />
+
+          <Text>
+            {formatGameMode(
+              currentGameMode ?? GameMode.STANDARD,
+              'instructions'
+            )}
+          </Text>
 
           <Space h="xl" />
 

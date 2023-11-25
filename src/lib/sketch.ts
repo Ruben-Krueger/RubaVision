@@ -9,26 +9,61 @@ import Emotion from '../types/Emotion';
 import correctBeep from '../sounds/correct.mp3';
 import wrongBeep from '../sounds/wrong.mp3';
 import roundBeep from '../sounds/round.mp3';
+import Color from '../types/Color';
+import Shape from '../types/Shape';
+import _ from 'lodash';
+import Answer from '../types/Answer';
+import nullThrows from 'capital-t-null-throws';
 
 let rounds: Round[] = [];
 
-const KEYS_TO_ANSWER: { [key: number]: Direction | Emotion } = {
+const KEYS_TO_ANSWER: { [key: number]: Answer } = {
+  // Left/right arrows
   37: Direction.LEFT,
   39: Direction.RIGHT,
+
+  // s,h
   83: Emotion.SAD,
   72: Emotion.HAPPY,
+
+  // 1, 2, 3
+  49: Shape.CIRCLE,
+  50: Shape.SQUARE,
+  51: Shape.TRIANGLE,
+
+  // 4, 5, 6
+  52: Color.RED,
+  53: Color.GREEN,
+  56: Color.YELLOW,
 };
+
+function getNextAnswer(gameMode: GameMode): Answer {
+  let options: Answer[] = [];
+
+  switch (gameMode) {
+    case GameMode.STANDARD:
+      options = Object.values(Direction);
+      break;
+    case GameMode.EMOTION:
+      options = Object.values(Emotion);
+      break;
+    case GameMode.COLORS:
+      options = Object.values(Color);
+      break;
+    case GameMode.SHAPES:
+      options = Object.values(Shape);
+      break;
+  }
+
+  return nullThrows(_.sample(options));
+}
 
 const correctSound = new Audio(correctBeep);
 const wrongSound = new Audio(wrongBeep);
 const roundSound = new Audio(roundBeep);
 
 const sketch = (p5: P5) => {
-  const HAS_EMOTIONAL_STIMULI = getLocalStorage('emotional-stimuli', false);
-
-  const GAME_MODE = HAS_EMOTIONAL_STIMULI
-    ? GameMode.EMOTION
-    : GameMode.STANDARD;
+  const GAME_MODE: GameMode = getLocalStorage('game-mode', GameMode.STANDARD);
 
   // The time to guess the movement direction after a target is displayed
   const ROUND_INTERVAL_MS = getLocalStorage('round-length', 1) * 1000;
@@ -58,12 +93,7 @@ const sketch = (p5: P5) => {
 
     // Initialize round information
     for (let i = 0; i < NUMBER_OF_ROUNDS; i++) {
-      const elements =
-        GAME_MODE === GameMode.EMOTION
-          ? Object.values(Emotion)
-          : Object.values(Direction);
-
-      const answer = Math.random() > 0.5 ? elements[0] : elements[1];
+      const answer = getNextAnswer(GAME_MODE);
 
       const previousEnd = rounds[i - 1]?.endTimestamp ?? now;
 
@@ -73,7 +103,7 @@ const sketch = (p5: P5) => {
         endTimestamp: previousEnd + ROUND_INTERVAL_MS,
         guess: null,
         answer,
-        targetCenter: targets.getTargetCenter(),
+        targetCenter: targets.getTargetCenter(), // this may be overwritten
       });
     }
   };
@@ -82,6 +112,7 @@ const sketch = (p5: P5) => {
     // Pause the game using "delete"
     if (p5.keyCode === 8) {
       p5.noLoop();
+      return;
     }
 
     // Resume the game using "backspace"
@@ -154,8 +185,10 @@ const sketch = (p5: P5) => {
       roundSound.play();
     }
 
-    targets.draw(round?.answer);
-    targets.update();
+    if (round) {
+      targets.draw(round.answer);
+      targets.update();
+    }
   };
 
   function drawFocusCircle() {

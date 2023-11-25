@@ -8,15 +8,17 @@ import {
   Space,
 } from '@mantine/core';
 import { useHistory } from 'react-router-dom';
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocalStorage } from '@mantine/hooks';
+import GameMode from '../types/GameMode';
+import formatGameMode from '../formatters/formatGameMode';
 
 export default function Start() {
   const history = useHistory();
 
-  const [HAS_EMOTIONAL_STIMULI] = useLocalStorage({
-    key: 'emotional-stimuli',
-    defaultValue: false,
+  const [GAME_MODE] = useLocalStorage({
+    key: 'game-mode',
+    defaultValue: GameMode.STANDARD,
   });
 
   return (
@@ -28,27 +30,18 @@ export default function Start() {
           </Center>
 
           <Paper>
+            <Text fw={700}>
+              Current game mode:{' '}
+              {formatGameMode(GAME_MODE ?? GameMode.STANDARD, 'title')}
+            </Text>
             <Text>Game play:</Text>
-            {HAS_EMOTIONAL_STIMULI ? (
-              <>
-                <Text>- Emotional images (happy or sad) will be displayed</Text>
-                <Text>
-                  - Use the "h" and "s" keys to guess whether the image is happy
-                  (h) or sad (s)
-                </Text>
-              </>
-            ) : (
-              <>
-                <Text>
-                  - Black circles will be moving left or right (with random
-                  vertical motion)
-                </Text>
-                <Text>
-                  - Use the left and right arrows to guess whether it is left or
-                  right
-                </Text>
-              </>
-            )}
+
+            <Text>
+              - {formatGameMode(GAME_MODE ?? GameMode.STANDARD, 'description')}
+            </Text>
+            <Text>
+              - {formatGameMode(GAME_MODE ?? GameMode.STANDARD, 'instructions')}
+            </Text>
 
             <Text>- Click "START" to begin</Text>
             <Text>- Press "q" to end the game</Text>
