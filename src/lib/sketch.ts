@@ -34,7 +34,7 @@ const KEYS_TO_ANSWER: { [key: number]: Answer } = {
   // 4, 5, 6
   52: Color.RED,
   53: Color.GREEN,
-  56: Color.YELLOW,
+  54: Color.YELLOW,
 };
 
 function getNextAnswer(gameMode: GameMode): Answer {
