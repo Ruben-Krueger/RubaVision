@@ -8,6 +8,7 @@ import Canvas from './screens/Canvas';
 import PageNotFound from './screens/PageNotFound';
 import End from './screens/End';
 import RVErrorBoundary from './components/RVErrorBoundary';
+import Login from './screens/Login';
 
 function App(): JSX.Element {
   return (
@@ -17,6 +18,11 @@ function App(): JSX.Element {
           <Switch>
             <Route exact path="/">
               {/* I could never get a component to render in prod at "/" */}
+            </Route>
+            <Route path="/login">
+              <RVErrorBoundary>
+                <Login />
+              </RVErrorBoundary>
             </Route>
             <Route exact path="/start">
               <RVErrorBoundary>

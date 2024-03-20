@@ -43,14 +43,14 @@ export default function Start() {
               - {formatGameMode(GAME_MODE ?? GameMode.STANDARD, 'instructions')}
             </Text>
 
-            <Text>- Click "START" to begin</Text>
+            <Text>- Click "PLAY" to begin</Text>
             <Text>- Press "q" to end the game</Text>
           </Paper>
 
           <Space h="lg" />
 
           <Flex gap="md" direction="column">
-            <Button onClick={() => history.push('/play')}>START</Button>
+            <Button onClick={() => history.push('/play')}>PLAY</Button>
             <Button color="gray" onClick={() => history.push('/settings')}>
               SETTINGS
             </Button>
