@@ -77,7 +77,7 @@ const sketch = (p5: P5) => {
   const NUMBER_OF_ROUNDS = getLocalStorage('number-rounds', 5);
 
   let velocity = 1;
-  let CURRENT_ROUND_END_MS: number | null = null;
+  let CURRENT_ROUND_INDEX = 0;
 
   const targets = new Targets(
     p5,
@@ -130,18 +130,14 @@ const sketch = (p5: P5) => {
 
     const now = Date.now();
 
-    const round = rounds.find(
-      (r) => now > r.startTimestamp && now < r.endTimestamp
-    );
+    const round = rounds[CURRENT_ROUND_INDEX];
 
     // This overwrites previous guesses
-    if (round) {
-      round.guess = guess;
-      if (round.answer === guess) {
-        correctSound.play();
-      } else {
-        wrongSound.play();
-      }
+    round.guess = guess;
+    if (round.answer === guess) {
+      correctSound.play();
+    } else {
+      wrongSound.play();
     }
   };
 
@@ -164,15 +160,12 @@ const sketch = (p5: P5) => {
       window.location.href = '/end';
     }
 
-    CURRENT_ROUND_END_MS = CURRENT_ROUND_END_MS ?? now + ROUND_INTERVAL_MS;
-
-    const round = rounds.find(
-      (r) => now > r.startTimestamp && now < r.endTimestamp
-    );
+    const round = rounds[CURRENT_ROUND_INDEX];
 
     // Next round
-    if (now > CURRENT_ROUND_END_MS) {
-      CURRENT_ROUND_END_MS = now + ROUND_INTERVAL_MS;
+    if (now >= round.endTimestamp) {
+      // Update the round
+      CURRENT_ROUND_INDEX = CURRENT_ROUND_INDEX + 1;
 
       const direction = round?.answer === Direction.LEFT ? -1 : 1;
 
@@ -183,9 +176,7 @@ const sketch = (p5: P5) => {
       if (round) round.targetCenter = targets.getTargetCenter();
 
       roundSound.play();
-    }
-
-    if (round) {
+    } else {
       targets.draw(round.answer);
       targets.update();
     }

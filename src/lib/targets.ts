@@ -95,13 +95,14 @@ class Targets {
   }
 
   drawColors(stimuli: Color) {
-    this.p5.fill(
+    const color =
       stimuli === Color.GREEN
         ? 'green'
         : stimuli === Color.RED
         ? 'red'
-        : 'yellow'
-    );
+        : 'yellow';
+
+    this.p5.fill(color);
     this.p5.noStroke();
     this.p5.circle(this.boundaryPosition.x, this.boundaryPosition.y, 60);
     this.p5.noFill();
@@ -161,6 +162,8 @@ class Targets {
     );
   }
 
+  /** Draws targets (circles) to screen
+   */
   drawTargets() {
     for (let i = 0; i < this.positions.length; i++) {
       this.p5.fill(51);
@@ -168,7 +171,8 @@ class Targets {
       this.p5.noFill();
     }
   }
-
+  /** In STANDARD game mode, jiggles the target circles.
+   */
   update() {
     if (this.gameMode === GameMode.STANDARD) this.updateTargets();
   }
