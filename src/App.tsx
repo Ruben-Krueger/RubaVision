@@ -10,6 +10,9 @@ import End from './screens/End';
 import RVErrorBoundary from './components/RVErrorBoundary';
 import Login from './screens/Login';
 
+import PrivateRoute from './PrivateRoute';
+import Register from './screens/Register';
+
 function App(): JSX.Element {
   return (
     <Router basename={process.env.PUBLIC_URL}>
@@ -24,11 +27,18 @@ function App(): JSX.Element {
                 <Login />
               </RVErrorBoundary>
             </Route>
-            <Route exact path="/start">
+            <Route path="/register">
               <RVErrorBoundary>
-                <Start />
+                <Register />
               </RVErrorBoundary>
             </Route>
+            <PrivateRoute>
+              <Route path="start">
+                <RVErrorBoundary>
+                  <Start />
+                </RVErrorBoundary>
+              </Route>
+            </PrivateRoute>
             <Route path="/play">
               <RVErrorBoundary>
                 <Canvas />

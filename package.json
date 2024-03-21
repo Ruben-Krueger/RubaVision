@@ -5,6 +5,7 @@
   "private": false,
   "dependencies": {
     "@mantine/core": "^7.0.0",
+    "@mantine/form": "^7.6.2",
     "@mantine/hooks": "^7.0.0",
     "@tabler/icons-react": "^2.39.0",
     "capital-t-null-throws": "^2.0.0",

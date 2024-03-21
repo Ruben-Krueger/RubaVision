@@ -1,27 +1,13 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import firebase from 'firebase';
+import { getAuth } from 'firebase/auth';
 
-export default function PrivateRoute({
-  children,
-}: {
-  children: ReactNode;
-}): JSX.Element {
-  const user = firebase.auth().currentUser;
+import { RouteProps } from 'react-router-dom';
 
-  const isLoggedIn = user != null;
+export default function PrivateRoute({ children }: RouteProps): JSX.Element {
+  const auth = getAuth();
 
-  return (
-    <Route
-      render={(props) =>
-        isLoggedIn ? (
-          <>{children}</>
-        ) : (
-          <Redirect
-            to={{ pathname: '/login', state: { from: props.location } }}
-          />
-        )
-      }
-    />
-  );
+  const isLoggedIn = auth.currentUser != null;
+
+  return <>{isLoggedIn ? children : <Redirect to="/login" />}</>;
 }
