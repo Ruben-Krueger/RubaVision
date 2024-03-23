@@ -38,28 +38,38 @@ function App(): JSX.Element {
                 <Register />
               </RVErrorBoundary>
             </Route>
-            <PrivateRoute>
-              <Route path="start">
+            <PrivateRoute
+              path="/start"
+              element={
                 <RVErrorBoundary>
                   <Start />
                 </RVErrorBoundary>
-              </Route>
-            </PrivateRoute>
-            <Route path="/play">
-              <RVErrorBoundary>
-                <Canvas />
-              </RVErrorBoundary>
-            </Route>
-            <Route path="/end">
-              <RVErrorBoundary>
-                <End />
-              </RVErrorBoundary>
-            </Route>
-            <Route path="/settings">
-              <RVErrorBoundary>
-                <Settings />
-              </RVErrorBoundary>
-            </Route>
+              }
+            ></PrivateRoute>
+            <PrivateRoute
+              path="/play"
+              element={
+                <RVErrorBoundary>
+                  <Canvas />
+                </RVErrorBoundary>
+              }
+            ></PrivateRoute>
+            <PrivateRoute
+              path="/end"
+              element={
+                <RVErrorBoundary>
+                  <End />
+                </RVErrorBoundary>
+              }
+            ></PrivateRoute>
+            <PrivateRoute
+              path="/settings"
+              element={
+                <RVErrorBoundary>
+                  <Settings />
+                </RVErrorBoundary>
+              }
+            ></PrivateRoute>
             <Route path="*" component={PageNotFound} />
           </Switch>
         </Suspense>

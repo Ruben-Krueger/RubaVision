@@ -109,18 +109,6 @@ export default function Login(props: PaperProps) {
           </Button>
         </Group>
 
-        <Group>
-          <Anchor
-            component="button"
-            type="button"
-            c="dimmed"
-            size="xs"
-            onClick={() => history.push('/reset-password')}
-          >
-            Forgot password?
-          </Anchor>
-        </Group>
-
         {loginError && (
           <Alert variant="light" color="red" title="Oops!">
             {JSON.stringify(loginError)}
