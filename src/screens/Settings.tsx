@@ -13,10 +13,9 @@ import {
   Select,
   Input,
 } from '@mantine/core';
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocalStorage } from '@mantine/hooks';
 import { useHistory } from 'react-router-dom';
-import useLogger from '../util/useLogger';
 
 import update from 'immutability-helper';
 
@@ -220,8 +219,6 @@ export default function Settings(): JSX.Element {
   });
 
   const history = useHistory();
-
-  const logger = useLogger();
 
   return (
     <Container>
