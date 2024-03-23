@@ -12,6 +12,7 @@ import Login from './screens/Login';
 
 import PrivateRoute from './PrivateRoute';
 import Register from './screens/Register';
+import ResetPassword from './screens/ResetPassword';
 
 function App(): JSX.Element {
   return (
@@ -21,6 +22,11 @@ function App(): JSX.Element {
           <Switch>
             <Route exact path="/">
               {/* I could never get a component to render in prod at "/" */}
+            </Route>
+            <Route path="/reset-password">
+              <RVErrorBoundary>
+                <ResetPassword />
+              </RVErrorBoundary>
             </Route>
             <Route path="/login">
               <RVErrorBoundary>

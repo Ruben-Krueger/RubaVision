@@ -11,8 +11,12 @@ import {
   Checkbox,
   Anchor,
   Stack,
+  Container,
+  Center,
+  Alert,
 } from '@mantine/core';
-import React from 'react';
+import React, { useState } from 'react';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function Login(props: PaperProps) {
   let history = useHistory();
@@ -35,13 +39,32 @@ export default function Login(props: PaperProps) {
     },
   });
 
-  return (
-    <Paper radius="md" p="xl" withBorder {...props}>
-      <Text size="lg" fw={500}>
-        Welcome to RubaVision, login with
-      </Text>
+  const [loginError, setLoginError] = useState<Error | null>(null);
 
-      <form onSubmit={form.onSubmit(() => {})}>
+  async function login() {
+    try {
+      const auth = getAuth();
+
+      const user = await signInWithEmailAndPassword(
+        auth,
+        form.values.email,
+        form.values.password
+      );
+
+      history.push('/start');
+    } catch (error) {
+      console.error(error);
+      setLoginError(error as Error);
+    }
+  }
+
+  return (
+    <Container size="xs">
+      <Paper radius="md" p="xl" withBorder {...props}>
+        <Text size="lg" fw={500}>
+          Login
+        </Text>
+
         <Stack>
           <TextInput
             required
@@ -81,11 +104,29 @@ export default function Login(props: PaperProps) {
           >
             Don't have an account? Register
           </Anchor>
-          <Button type="submit" radius="xl">
+          <Button type="submit" radius="xl" onClick={() => login()}>
             Login
           </Button>
         </Group>
-      </form>
-    </Paper>
+
+        <Group>
+          <Anchor
+            component="button"
+            type="button"
+            c="dimmed"
+            size="xs"
+            onClick={() => history.push('/reset-password')}
+          >
+            Forgot password?
+          </Anchor>
+        </Group>
+
+        {loginError && (
+          <Alert variant="light" color="red" title="Oops!">
+            {JSON.stringify(loginError)}
+          </Alert>
+        )}
+      </Paper>
+    </Container>
   );
 }

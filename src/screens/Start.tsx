@@ -13,13 +13,17 @@ import { useLocalStorage } from '@mantine/hooks';
 import GameMode from '../types/GameMode';
 import formatGameMode from '../formatters/formatGameMode';
 
+console.log('sdjhads ');
 export default function Start() {
   const history = useHistory();
+
+  console.log('x0');
 
   const [GAME_MODE] = useLocalStorage({
     key: 'game-mode',
     defaultValue: GameMode.STANDARD,
   });
+  console.log('x1');
 
   return (
     <Container>
