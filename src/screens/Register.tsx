@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useToggle, upperFirst } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import {
   TextInput,
@@ -50,7 +49,6 @@ export default function Register(): JSX.Element {
         form.values.password
       );
 
-      console.log(user);
       history.push('/start');
     } catch (error) {
       console.error(error);

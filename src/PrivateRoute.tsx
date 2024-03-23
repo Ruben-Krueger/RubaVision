@@ -1,13 +1,32 @@
-import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import { User, getAuth, onAuthStateChanged } from 'firebase/auth';
 
 import { RouteProps } from 'react-router-dom';
+import { Loader } from '@mantine/core';
 
 export default function PrivateRoute({ children }: RouteProps): JSX.Element {
   const auth = getAuth();
 
-  const isLoggedIn = auth.currentUser != null;
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
 
-  return <>{isLoggedIn ? children : <Redirect to="/login" />}</>;
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setIsLoading(false);
+      setUser(user);
+    });
+  }, []);
+
+  return (
+    <>
+      {isLoading ? (
+        <Loader color="blue" />
+      ) : user != null ? (
+        children
+      ) : (
+        <Redirect to="/login" />
+      )}
+    </>
+  );
 }
