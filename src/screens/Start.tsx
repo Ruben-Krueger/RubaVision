@@ -12,6 +12,7 @@ import React from 'react';
 import { useLocalStorage } from '@mantine/hooks';
 import GameMode from '../types/GameMode';
 import formatGameMode from '../formatters/formatGameMode';
+import RVHeader from '../components/RVHeader';
 
 export default function Start() {
   const history = useHistory();
@@ -23,12 +24,9 @@ export default function Start() {
 
   return (
     <Container>
+      <RVHeader />
       <Center>
         <Flex direction="column">
-          <Center>
-            <Text size="xl">RubaVision</Text>
-          </Center>
-
           <Paper>
             <Text fw={700}>
               Current game mode:{' '}
