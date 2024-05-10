@@ -45,7 +45,7 @@ export default function Login(props: PaperProps) {
     try {
       const auth = getAuth();
 
-      const user = await signInWithEmailAndPassword(
+      await signInWithEmailAndPassword(
         auth,
         form.values.email,
         form.values.password

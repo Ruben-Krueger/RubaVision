@@ -15,8 +15,6 @@ import _ from 'lodash';
 import Answer from '../types/Answer';
 import nullThrows from 'capital-t-null-throws';
 
-let rounds: Round[] = [];
-
 const KEYS_TO_ANSWER: { [key: number]: Answer } = {
   // Left/right arrows
   37: Direction.LEFT,
@@ -76,36 +74,36 @@ const sketch = (p5: P5) => {
   );
   const NUMBER_OF_ROUNDS = getLocalStorage('number-rounds', 5);
 
-  let velocity = 1;
   let CURRENT_ROUND_INDEX = 0;
+
+  const now = Date.now();
+
+  let rounds: Round[] = [];
+
+  // Initialize round information
+  for (let i = 0; i < NUMBER_OF_ROUNDS; i++) {
+    const answer = getNextAnswer(GAME_MODE);
+
+    const previousEnd = rounds[i - 1]?.endTimestamp ?? now;
+
+    rounds.push({
+      index: i,
+      startTimestamp: previousEnd,
+      endTimestamp: previousEnd + ROUND_INTERVAL_MS,
+      guess: null,
+      answer,
+      targetCenter: targets.getTargetCenter(), // this may be overwritten
+    });
+  }
 
   const targets = new Targets(
     p5,
     GAME_MODE,
-    velocity,
     HAS_RANDOMLY_MOVING_TARGET_CENTERS ? null : targetCenters
   );
 
   p5.setup = () => {
     p5.createCanvas(window.innerWidth, window.innerHeight);
-
-    const now = Date.now();
-
-    // Initialize round information
-    for (let i = 0; i < NUMBER_OF_ROUNDS; i++) {
-      const answer = getNextAnswer(GAME_MODE);
-
-      const previousEnd = rounds[i - 1]?.endTimestamp ?? now;
-
-      rounds.push({
-        index: i,
-        startTimestamp: previousEnd,
-        endTimestamp: previousEnd + ROUND_INTERVAL_MS,
-        guess: null,
-        answer,
-        targetCenter: targets.getTargetCenter(), // this may be overwritten
-      });
-    }
   };
 
   p5.keyPressed = () => {
@@ -127,10 +125,12 @@ const sketch = (p5: P5) => {
     }
 
     const guess = KEYS_TO_ANSWER[p5.keyCode] ?? null;
-
-    const now = Date.now();
+    console.log('p5 keycode', p5.keyCode);
+    console.log('guess', guess);
 
     const round = rounds[CURRENT_ROUND_INDEX];
+
+    console.log(round);
 
     // This overwrites previous guesses
     round.guess = guess;
@@ -157,7 +157,7 @@ const sketch = (p5: P5) => {
 
       storeResults(rounds);
 
-      window.location.href = '/end';
+      // window.location.href = '/end';
     }
 
     const round = rounds[CURRENT_ROUND_INDEX];

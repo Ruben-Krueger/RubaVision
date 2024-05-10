@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import sketch from '../lib/sketch';
 import countdown from '../lib/countdown';
 import p5 from 'p5';
-import { useLocalStorage, useTimeout } from '@mantine/hooks';
+import { useTimeout } from '@mantine/hooks';
 
 export default function Canvas(): JSX.Element {
   const { start, clear } = useTimeout(() => {
