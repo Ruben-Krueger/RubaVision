@@ -35,7 +35,6 @@ class Targets {
   boundaryPosition: Position;
   p5: P5;
   positions: Position[];
-  velocity: number;
   jitter: number;
   gameMode: GameMode;
 
@@ -48,7 +47,6 @@ class Targets {
   constructor(
     p5: P5,
     gameMode: GameMode,
-    velocity: number,
     targetCenters?: Position[] | null,
     jitter = 5
   ) {
@@ -65,8 +63,6 @@ class Targets {
     this.positions = Array.from({ length: DOT_COUNT }, () =>
       getInitialTargetPosition(this.boundaryPosition)
     );
-
-    this.velocity = velocity;
 
     this.gameMode = gameMode;
 
