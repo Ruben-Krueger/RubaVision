@@ -27,7 +27,7 @@ const metadata: {
   },
   MOTION: {
     description: 'Guess the direction of moving circles',
-    title: 'MOTION',
+    title: 'Motion',
     instructions: 'Use left/right arrow keys to guess the direction',
   },
 };

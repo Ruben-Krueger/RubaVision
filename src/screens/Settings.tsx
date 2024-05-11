@@ -7,11 +7,9 @@ import {
   Space,
   Group,
   rem,
-  Checkbox,
   Button,
   NumberInput,
   Select,
-  Input,
 } from '@mantine/core';
 import React from 'react';
 import { useLocalStorage } from '@mantine/hooks';
@@ -35,14 +33,6 @@ function CoordinateBox() {
     defaultValue: [] as Position[],
   });
 
-  const [hasRandomMovingTargetCenter, setHasRandomMovingTargetCenter] =
-    useLocalStorage({
-      key: 'has-moving-target-center',
-      defaultValue: true,
-    });
-
-  const disabled = hasRandomMovingTargetCenter;
-
   const formatColor = (color: string) => `--mantine-color-${color}-8`;
 
   const colors = [
@@ -56,19 +46,6 @@ function CoordinateBox() {
 
   return (
     <Container>
-      <Checkbox
-        label="Alternate the target center"
-        checked={hasRandomMovingTargetCenter}
-        onChange={(event) => {
-          setHasRandomMovingTargetCenter(event.target.checked);
-        }}
-        description={
-          hasRandomMovingTargetCenter
-            ? 'Uncheck this to manually set a target center below'
-            : 'Check this to randomly move target centers'
-        }
-      />
-
       <Space h="xl" />
 
       <Group justify="center">
@@ -84,120 +61,118 @@ function CoordinateBox() {
           <p style={{ position: 'absolute', left: width, top: height }}>
             {window.innerWidth},{window.innerHeight}
           </p>
-
-          {!disabled && (
-            <>
-              {values?.map((v, i) => (
-                <div
-                  key={v.id ?? `${v.x},${v.y}`}
-                  style={{
-                    position: 'absolute',
-                    left: `calc(${
-                      (v?.x / window.innerWidth ?? 0) * 100
-                    }% - ${rem(8)})`,
-                    top: `calc(${
-                      (v?.y / window.innerHeight ?? 0) * 100
-                    }% - ${rem(8)})`,
-                    width: rem(16),
-                    height: rem(16),
-                    backgroundColor: `var(${colors[i]})`,
-                  }}
-                />
-              ))}
-            </>
-          )}
+          <>
+            {values?.map((v, i) => (
+              <div
+                key={v.id ?? `${v.x},${v.y}`}
+                style={{
+                  position: 'absolute',
+                  left: `calc(${(v?.x / window.innerWidth ?? 0) * 100}% - ${rem(
+                    8
+                  )})`,
+                  top: `calc(${(v?.y / window.innerHeight ?? 0) * 100}% - ${rem(
+                    8
+                  )})`,
+                  width: rem(16),
+                  height: rem(16),
+                  backgroundColor: `var(${colors[i]})`,
+                }}
+              />
+            ))}
+          </>
         </div>
       </Group>
 
       <Space h="xl" />
 
-      {!disabled && (
-        <>
-          <Table>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Target</Table.Th>
+      <>
+        <Table>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Target</Table.Th>
 
-                <Table.Th>Coordinates (x,y)</Table.Th>
-                <Table.Th>Action</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {values?.map((value, i) => (
-                <Table.Tr key={value.id}>
-                  <Table.Td>
-                    <div
-                      style={{
-                        width: rem(16),
-                        height: rem(16),
-                        backgroundColor: `var(${colors[i]})`,
-                      }}
-                    />
-                  </Table.Td>
-                  <Table.Td>
-                    <Flex>
-                      <NumberInput
-                        value={value.x}
-                        onChange={(newX) => {
-                          setValues((previous) => {
-                            const array = [...previous];
-                            array[i].x =
-                              typeof newX === 'string' ? parseInt(newX) : newX;
-
-                            return array;
-                          });
-                        }}
-                        hideControls
-                        allowNegative={false}
-                        max={window.innerWidth}
-                      />
-                      <NumberInput
-                        value={value.y}
-                        onChange={(newY) => {
-                          setValues((previous) => {
-                            const array = [...previous];
-                            array[i].y =
-                              typeof newY === 'string' ? parseInt(newY) : newY;
-
-                            return array;
-                          });
-                        }}
-                        min={0}
-                        max={window.innerHeight}
-                        hideControls
-                      />
-                    </Flex>
-                  </Table.Td>
-                  <Table.Td>
-                    <Button
-                      color="red"
-                      onClick={() => {
+              <Table.Th>Coordinates (x,y)</Table.Th>
+              <Table.Th>Action</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {values?.map((value, i) => (
+              <Table.Tr key={value.id}>
+                <Table.Td>
+                  <div
+                    style={{
+                      width: rem(16),
+                      height: rem(16),
+                      backgroundColor: `var(${colors[i]})`,
+                    }}
+                  />
+                </Table.Td>
+                <Table.Td>
+                  <Flex>
+                    <NumberInput
+                      value={value.x}
+                      onChange={(newX) => {
                         setValues((previous) => {
                           const array = [...previous];
-                          array.splice(i, 1);
+                          array[i].x =
+                            typeof newX === 'string' ? parseInt(newX) : newX;
+
                           return array;
                         });
                       }}
-                    >
-                      ×
-                    </Button>
-                  </Table.Td>
-                </Table.Tr>
-              ))}
-            </Table.Tbody>
-          </Table>
-          <Button
-            onClick={() => {
-              const newValue = nullThrows(
-                update(values, { $push: [{ x: 0, y: 0, id: uuidv4() }] })
-              );
-              setValues(newValue);
-            }}
-          >
-            ADD
-          </Button>
-        </>
-      )}
+                      hideControls
+                      allowNegative={false}
+                      max={window.innerWidth}
+                    />
+                    <NumberInput
+                      value={value.y}
+                      onChange={(newY) => {
+                        setValues((previous) => {
+                          const array = [...previous];
+                          array[i].y =
+                            typeof newY === 'string' ? parseInt(newY) : newY;
+
+                          return array;
+                        });
+                      }}
+                      min={0}
+                      max={window.innerHeight}
+                      hideControls
+                    />
+                  </Flex>
+                </Table.Td>
+                <Table.Td>
+                  <Button
+                    color="red"
+                    onClick={() => {
+                      setValues((previous) => {
+                        const array = [...previous];
+                        array.splice(i, 1);
+                        return array;
+                      });
+                    }}
+                  >
+                    ×
+                  </Button>
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table>
+
+        <Space h="md" />
+
+        <Button
+          onClick={() => {
+            const newValue = nullThrows(
+              update(values, { $push: [{ x: 0, y: 0, id: uuidv4() }] })
+            );
+            setValues(newValue);
+          }}
+        >
+          ADD
+        </Button>
+      </>
     </Container>
   );
 }

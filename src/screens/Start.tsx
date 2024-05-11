@@ -21,8 +21,6 @@ export default function Start() {
     defaultValue: GameMode.MOTION,
   });
 
-  console.log(GAME_MODE);
-
   return (
     <Container>
       <Center>

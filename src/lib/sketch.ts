@@ -71,12 +71,8 @@ const sketch = (p5: P5) => {
   // The time to guess the movement direction after a target is displayed
   const ROUND_INTERVAL_MS = getLocalStorage('round-length', 1) * 1000;
 
-  const targetCenters = getLocalStorage('target-centers', [{ x: 0, y: 0 }]);
+  const targetCenters = getLocalStorage('target-centers', [{ x: 100, y: 100 }]);
 
-  const HAS_RANDOMLY_MOVING_TARGET_CENTERS = getLocalStorage(
-    'has-moving-target-center',
-    true
-  );
   const NUMBER_OF_ROUNDS = getLocalStorage('number-rounds', 5);
 
   let CURRENT_ROUND_INDEX = 0;
@@ -97,15 +93,11 @@ const sketch = (p5: P5) => {
       endTimestamp: previousEnd + ROUND_INTERVAL_MS,
       guess: null,
       answer,
-      targetCenter: targetCenters[i], // this may be overwritten
+      targetCenter: targetCenters[i % targetCenters.length], // this may be overwritten
     });
   }
 
-  const targets = new Targets(
-    p5,
-    GAME_MODE,
-    HAS_RANDOMLY_MOVING_TARGET_CENTERS ? null : targetCenters
-  );
+  const targets = new Targets(p5, GAME_MODE, targetCenters);
 
   p5.setup = () => {
     p5.createCanvas(window.innerWidth, window.innerHeight);
@@ -130,12 +122,8 @@ const sketch = (p5: P5) => {
     }
 
     const guess = KEYS_TO_ANSWER[p5.keyCode] ?? null;
-    console.log('p5 keycode', p5.keyCode);
-    console.log('guess', guess);
 
     const round = rounds[CURRENT_ROUND_INDEX];
-
-    console.log(round);
 
     // This overwrites previous guesses
     round.guess = guess;
