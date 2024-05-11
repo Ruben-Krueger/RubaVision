@@ -25,9 +25,9 @@ const metadata: {
     instructions:
       "Use '1' to guess circle, '2' to guess square, '3' to guess triangle ",
   },
-  STANDARD: {
+  MOTION: {
     description: 'Guess the direction of moving circles',
-    title: 'Standard',
+    title: 'MOTION',
     instructions: 'Use left/right arrow keys to guess the direction',
   },
 };

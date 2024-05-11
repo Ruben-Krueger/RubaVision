@@ -35,11 +35,16 @@ const KEYS_TO_ANSWER: { [key: number]: Answer } = {
   54: Color.YELLOW,
 };
 
+/** Get a random answer for a round.
+ *
+ * @param gameMode
+ * @returns A round answer
+ */
 function getNextAnswer(gameMode: GameMode): Answer {
   let options: Answer[] = [];
 
   switch (gameMode) {
-    case GameMode.STANDARD:
+    case GameMode.MOTION:
       options = Object.values(Direction);
       break;
     case GameMode.EMOTION:
@@ -61,7 +66,7 @@ const wrongSound = new Audio(wrongBeep);
 const roundSound = new Audio(roundBeep);
 
 const sketch = (p5: P5) => {
-  const GAME_MODE: GameMode = getLocalStorage('game-mode', GameMode.STANDARD);
+  const GAME_MODE: GameMode = getLocalStorage('game-mode', GameMode.MOTION);
 
   // The time to guess the movement direction after a target is displayed
   const ROUND_INTERVAL_MS = getLocalStorage('round-length', 1) * 1000;
@@ -92,7 +97,7 @@ const sketch = (p5: P5) => {
       endTimestamp: previousEnd + ROUND_INTERVAL_MS,
       guess: null,
       answer,
-      targetCenter: targets.getTargetCenter(), // this may be overwritten
+      targetCenter: targetCenters[i], // this may be overwritten
     });
   }
 
@@ -145,6 +150,7 @@ const sketch = (p5: P5) => {
     p5.background(255);
     drawFocusCircle();
 
+    // Play the starting sound
     if (p5.frameCount === 1) {
       roundSound.play();
     }
@@ -157,7 +163,7 @@ const sketch = (p5: P5) => {
 
       storeResults(rounds);
 
-      // window.location.href = '/end';
+      window.location.href = '/end';
     }
 
     const round = rounds[CURRENT_ROUND_INDEX];
@@ -167,18 +173,13 @@ const sketch = (p5: P5) => {
       // Update the round
       CURRENT_ROUND_INDEX = CURRENT_ROUND_INDEX + 1;
 
-      const direction = round?.answer === Direction.LEFT ? -1 : 1;
-
-      const newVelocity = GAME_MODE === GameMode.STANDARD ? direction : null;
-
-      targets.moveTargets(newVelocity);
-
-      if (round) round.targetCenter = targets.getTargetCenter();
+      targets.moveTargetLocation(CURRENT_ROUND_INDEX);
 
       roundSound.play();
     } else {
       targets.draw(round.answer);
-      targets.update();
+
+      targets.update(round.answer);
     }
   };
 

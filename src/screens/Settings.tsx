@@ -215,7 +215,7 @@ export default function Settings(): JSX.Element {
 
   const [currentGameMode, setCurrentGameMode] = useLocalStorage({
     key: 'game-mode',
-    defaultValue: GameMode.STANDARD,
+    defaultValue: GameMode.MOTION,
   });
 
   const history = useHistory();
@@ -272,11 +272,11 @@ export default function Settings(): JSX.Element {
           <Text size="lg">Game modes</Text>
           <Select
             label={formatGameMode(
-              currentGameMode ?? GameMode.STANDARD,
+              currentGameMode ?? GameMode.MOTION,
               'description'
             )}
             placeholder={formatGameMode(
-              currentGameMode ?? GameMode.STANDARD,
+              currentGameMode ?? GameMode.MOTION,
               'title'
             )}
             data={Object.keys(GameMode).map((mode) => ({
@@ -290,10 +290,7 @@ export default function Settings(): JSX.Element {
           />
 
           <Text>
-            {formatGameMode(
-              currentGameMode ?? GameMode.STANDARD,
-              'instructions'
-            )}
+            {formatGameMode(currentGameMode ?? GameMode.MOTION, 'instructions')}
           </Text>
 
           <Space h="xl" />
