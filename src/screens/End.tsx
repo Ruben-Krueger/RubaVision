@@ -78,7 +78,7 @@ export default function End(): JSX.Element {
         <Flex gap="md" direction="column">
           <Text size="lg">Round over</Text>
           {rounds.length === 0 && (
-            <Text size="lg">Uh-oh! We couldn't parse the previous game</Text>
+            <Text size="lg">Uh-oh! We couldn't load the previous game</Text>
           )}
           <Text size="md">Total score: {score} </Text>
 
