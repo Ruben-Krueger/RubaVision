@@ -13,6 +13,7 @@ import Login from './screens/Login';
 import PrivateRoute from './PrivateRoute';
 import Register from './screens/Register';
 import ResetPassword from './screens/ResetPassword';
+import VisionMap from './screens/VisionMap';
 
 function App(): JSX.Element {
   return (
@@ -70,6 +71,15 @@ function App(): JSX.Element {
                 </RVErrorBoundary>
               }
             ></PrivateRoute>
+            <PrivateRoute
+              path="/vision-map"
+              element={
+                <RVErrorBoundary>
+                  <VisionMap />
+                </RVErrorBoundary>
+              }
+            ></PrivateRoute>
+
             <Route path="*" component={PageNotFound} />
           </Switch>
         </Suspense>
