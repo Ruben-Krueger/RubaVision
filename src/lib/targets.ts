@@ -42,7 +42,6 @@ class Targets {
   happyImage: P5.Image | null;
 
   targetCenters: Position[] | null;
-  targetIndex: number;
 
   constructor(
     p5: P5,
@@ -55,7 +54,6 @@ class Targets {
     if (targetCenters) {
       this.boundaryPosition = targetCenters[0];
       this.targetCenters = targetCenters;
-      this.targetIndex = 0;
     } else {
       this.boundaryPosition = getNewBoundaryPosition();
     }
@@ -76,17 +74,16 @@ class Targets {
     };
   }
 
-  draw(stimuli: Answer) {
-    if (this.gameMode === GameMode.STANDARD) {
+  draw(answer: Answer) {
+    if (this.gameMode === GameMode.MOTION) {
       this.drawTargets();
       this.drawBoundary();
     } else if (this.gameMode === GameMode.EMOTION) {
-      // I know this is hacky but I don't have a reviewer to require this to be better ha
-      this.drawEmotionalStimuli(stimuli as unknown as Emotion);
+      this.drawEmotionalStimuli(answer as unknown as Emotion);
     } else if (this.gameMode === GameMode.COLORS) {
-      this.drawColors(stimuli as unknown as Color);
+      this.drawColors(answer as unknown as Color);
     } else if (this.gameMode === GameMode.SHAPES) {
-      this.drawShapes(stimuli as unknown as Shape);
+      this.drawShapes(answer as unknown as Shape);
     }
   }
 
@@ -132,8 +129,8 @@ class Targets {
     this.p5.noFill();
   }
 
-  getTargetCenter(): Position {
-    return this.targetCenters?.[this.targetIndex] ?? this.boundaryPosition;
+  getTargetCenter(roundIndex: number): Position {
+    return this.targetCenters?.[roundIndex] ?? this.boundaryPosition;
   }
 
   drawBoundary() {
@@ -167,43 +164,46 @@ class Targets {
       this.p5.noFill();
     }
   }
-  /** In STANDARD game mode, jiggles the target circles.
+  /** In MOTION game mode, jiggles the target circles.
    */
-  update() {
-    if (this.gameMode === GameMode.STANDARD) this.updateTargets();
+  update(answer: Answer) {
+    if (this.gameMode === GameMode.MOTION) {
+      const newVelocityX = answer === Direction.LEFT ? -1 : 1;
+
+      this.moveTargetCirclesHorizontallyAndVertically(newVelocityX);
+    }
   }
 
   moveCenter(newPosition: Position) {
     this.boundaryPosition = newPosition;
   }
 
-  moveTargets(newDirection?: number | null) {
-    if (newDirection) {
-      this.velocity = newDirection;
-    }
-
+  moveTargetLocation(roundIndex: number) {
     // Move the target center
     if (this.targetCenters) {
-      this.targetIndex = this.targetIndex + 1;
-
       this.boundaryPosition =
-        this.targetCenters[this.targetIndex % this.targetCenters.length];
+        this.targetCenters[roundIndex % this.targetCenters.length];
     } else {
       this.boundaryPosition = getNewBoundaryPosition();
     }
 
-    // Populate circles
-    if (this.gameMode === GameMode.STANDARD) {
+    // Populate moving circles
+    if (this.gameMode === GameMode.MOTION) {
       this.positions = Array.from({ length: DOT_COUNT }, () =>
         getInitialTargetPosition(this.boundaryPosition)
       );
     }
   }
 
-  updateTargets() {
+  /**
+   * In MOTION game mode, moves the targets horizontally (velocityX) and vertically (random amount)
+   *
+   * @param velocityX
+   */
+  moveTargetCirclesHorizontallyAndVertically(velocityX: number) {
     const newPositions = this.positions
       .map((position) => ({
-        x: position.x + this.velocity,
+        x: position.x + velocityX,
         y: position.y + getRandomInt(-this.jitter, this.jitter),
       }))
       .filter(

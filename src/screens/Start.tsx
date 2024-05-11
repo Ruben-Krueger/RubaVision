@@ -18,8 +18,10 @@ export default function Start() {
 
   const [GAME_MODE] = useLocalStorage({
     key: 'game-mode',
-    defaultValue: GameMode.STANDARD,
+    defaultValue: GameMode.MOTION,
   });
+
+  console.log(GAME_MODE);
 
   return (
     <Container>
@@ -32,15 +34,15 @@ export default function Start() {
           <Paper>
             <Text fw={700}>
               Current game mode:{' '}
-              {formatGameMode(GAME_MODE ?? GameMode.STANDARD, 'title')}
+              {formatGameMode(GAME_MODE ?? GameMode.MOTION, 'title')}
             </Text>
             <Text>Game play:</Text>
 
             <Text>
-              - {formatGameMode(GAME_MODE ?? GameMode.STANDARD, 'description')}
+              - {formatGameMode(GAME_MODE ?? GameMode.MOTION, 'description')}
             </Text>
             <Text>
-              - {formatGameMode(GAME_MODE ?? GameMode.STANDARD, 'instructions')}
+              - {formatGameMode(GAME_MODE ?? GameMode.MOTION, 'instructions')}
             </Text>
 
             <Text>- Click "PLAY" to begin</Text>
