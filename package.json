@@ -1,79 +1,79 @@
 {
-  "name": "rubavision",
-  "version": "0.1.0",
-  "homepage": "https://rubavision.netlify.app",
-  "private": false,
-  "dependencies": {
-    "@mantine/core": "^7.0.0",
-    "@mantine/form": "^7.6.2",
-    "@mantine/hooks": "^7.0.0",
-    "@tabler/icons-react": "^2.39.0",
-    "capital-t-null-throws": "^2.0.0",
-    "d3": "^7.8.5",
-    "firebase": "^10.9.0",
-    "firebaseui": "^6.1.0",
-    "immutability-helper": "^3.1.1",
-    "lodash": "^4.17.21",
-    "luxon": "^3.4.3",
-    "p5": "^1.7.0",
-    "pino": "^8.16.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-error-boundary": "^4.0.11",
-    "react-router-dom": "^5.3.4",
-    "react-scripts": "5.0.1",
-    "uuid": "^9.0.1"
-  },
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "web": "react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
-    "lint": "npx eslint . --ext .ts"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@eslint/js": "^9.2.0",
-    "@types/d3": "^7.4.2",
-    "@types/lodash": "^4.14.202",
-    "@types/luxon": "^3.3.3",
-    "@types/node": "^20.7.1",
-    "@types/p5": "^1.7.0",
-    "@types/react": "^18.2.23",
-    "@types/react-dom": "^18.2.8",
-    "@types/react-router-dom": "^5.3.3",
-    "@types/uuid": "^9.0.6",
-    "eslint": "^8.57.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.28.1",
-    "eslint-plugin-n": "^16.1.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-ternary": "^2.0.0",
-    "gh-pages": "^6.0.0",
-    "postcss": "^8.4.30",
-    "postcss-preset-mantine": "^1.7.0",
-    "postcss-simple-vars": "^7.0.1",
-    "typescript": "^4.9.5",
-    "typescript-eslint": "^7.9.0"
-  }
+	"name": "rubavision",
+	"version": "0.1.0",
+	"homepage": "https://rubavision.netlify.app",
+	"private": false,
+	"dependencies": {
+		"@mantine/core": "^7.0.0",
+		"@mantine/form": "^7.6.2",
+		"@mantine/hooks": "^7.0.0",
+		"@tabler/icons-react": "^2.39.0",
+		"capital-t-null-throws": "^2.0.0",
+		"d3": "^7.8.5",
+		"firebase": "^10.9.0",
+		"firebaseui": "^6.1.0",
+		"immutability-helper": "^3.1.1",
+		"lodash": "^4.17.21",
+		"luxon": "^3.4.3",
+		"p5": "^1.7.0",
+		"pino": "^8.16.1",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-error-boundary": "^4.0.11",
+		"react-router-dom": "^5.3.4",
+		"react-scripts": "5.0.1",
+		"uuid": "^9.0.1"
+	},
+	"scripts": {
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d build",
+		"start": "react-scripts start",
+		"web": "react-scripts start",
+		"build": "react-scripts build",
+		"eject": "react-scripts eject",
+		"lint": "npx eslint . --ext .ts,.tsx"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+		"@eslint/js": "^9.2.0",
+		"@types/d3": "^7.4.2",
+		"@types/lodash": "^4.14.202",
+		"@types/luxon": "^3.3.3",
+		"@types/node": "^20.7.1",
+		"@types/p5": "^1.7.0",
+		"@types/react": "^18.2.23",
+		"@types/react-dom": "^18.2.8",
+		"@types/react-router-dom": "^5.3.3",
+		"@types/uuid": "^9.0.6",
+		"eslint": "^8.57.0",
+		"eslint-config-standard": "^17.1.0",
+		"eslint-plugin-import": "^2.28.1",
+		"eslint-plugin-n": "^16.1.0",
+		"eslint-plugin-promise": "^6.1.1",
+		"eslint-plugin-react": "^7.33.2",
+		"eslint-plugin-ternary": "^2.0.0",
+		"gh-pages": "^6.0.0",
+		"postcss": "^8.4.30",
+		"postcss-preset-mantine": "^1.7.0",
+		"postcss-simple-vars": "^7.0.1",
+		"typescript": "^4.9.5",
+		"typescript-eslint": "^7.9.0"
+	}
 }

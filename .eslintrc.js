@@ -33,7 +33,7 @@ module.exports = {
 			{ SwitchCase: 1, VariableDeclarator: { let: 2, const: 3 } }
 		],
 		'no-tabs': 'off',
-		'multiline-ternary': ['error', 'always-multiline']
+		'multiline-ternary': ['off']
 	},
 	ignorePatterns: ['build/*', 'node_modules/*']
 };
