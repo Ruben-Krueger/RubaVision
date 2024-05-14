@@ -11,7 +11,6 @@ import {
   NumberInput,
   Select,
   AppShell,
-  ActionIcon,
 } from '@mantine/core';
 import React from 'react';
 import { useLocalStorage } from '@mantine/hooks';
@@ -25,7 +24,7 @@ import Position from '../types/Position';
 import { v4 as uuidv4 } from 'uuid';
 import GameMode from '../types/GameMode';
 import formatGameMode from '../formatters/formatGameMode';
-import { IconAdjustments } from '@tabler/icons-react';
+import RVFooter from '../components/RVFooter';
 
 function CoordinateBox() {
   const width = window.innerWidth / 5;
@@ -199,11 +198,7 @@ export default function Settings(): JSX.Element {
   const history = useHistory();
 
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: 'sm' }}
-      padding="md"
-    >
+    <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between">
           RubaVision
@@ -212,21 +207,6 @@ export default function Settings(): JSX.Element {
           </Button>
         </Group>
       </AppShell.Header>
-
-      <AppShell.Navbar p="md">
-        <AppShell.Footer p="md">
-          <ActionIcon
-            variant="filled"
-            aria-label="Settings"
-            onClick={() => history.push('/settings')}
-          >
-            <IconAdjustments
-              style={{ width: '70%', height: '70%' }}
-              stroke={1.5}
-            />
-          </ActionIcon>
-        </AppShell.Footer>
-      </AppShell.Navbar>
 
       <AppShell.Main>
         <Center>
@@ -309,6 +289,8 @@ export default function Settings(): JSX.Element {
           </Flex>
         </Center>
       </AppShell.Main>
+
+      <RVFooter />
     </AppShell>
   );
 }

@@ -33,33 +33,7 @@ export default function Start() {
       </AppShell.Header>
       <AppShell.Main>
         <Container>
-          <Center>
-            <Flex direction="column">
-              <Center>
-                <Text size="xl">Start</Text>
-              </Center>
-
-              <Paper>
-                <Text fw={700}>
-                  Current game mode:{' '}
-                  {formatGameMode(GAME_MODE ?? GameMode.MOTION, 'title')}
-                </Text>
-                <Text>Game play:</Text>
-
-                <Text>
-                  -{' '}
-                  {formatGameMode(GAME_MODE ?? GameMode.MOTION, 'description')}
-                </Text>
-                <Text>
-                  -{' '}
-                  {formatGameMode(GAME_MODE ?? GameMode.MOTION, 'instructions')}
-                </Text>
-
-                <Text>- Click "PLAY" to begin</Text>
-                <Text>- Press "q" to end the game</Text>
-              </Paper>
-            </Flex>
-          </Center>
+          <Text>Terms of Service</Text>
         </Container>
       </AppShell.Main>
       <RVFooter />

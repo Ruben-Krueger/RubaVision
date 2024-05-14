@@ -4,9 +4,6 @@ import {
   Flex,
   Center,
   Text,
-  Paper,
-  Space,
-  rem,
   Table,
   ActionIcon,
   AppShell,
@@ -15,12 +12,14 @@ import {
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Round from '../types/Round';
-import { IconAdjustments, IconCheck, IconCircleX } from '@tabler/icons-react';
+import { IconAdjustments } from '@tabler/icons-react';
 import Data from '../types/Data';
 import nullThrows from 'capital-t-null-throws';
 import { DateTime } from 'luxon';
 import useLogger from '../util/useLogger';
 import _, { sum } from 'lodash';
+import RVHeader from '../components/RVHeader';
+import RVFooter from '../components/RVFooter';
 
 function downloadResults(gameData: Data): void {
   const data =
@@ -31,7 +30,7 @@ function downloadResults(gameData: Data): void {
 
   const fileName = `${time}-results.json`;
 
-  var downloadAnchorNode = document.createElement('a');
+  const downloadAnchorNode = document.createElement('a');
   downloadAnchorNode.setAttribute('href', data);
   downloadAnchorNode.setAttribute('download', fileName);
   document.body.appendChild(downloadAnchorNode); // required for firefox
@@ -76,31 +75,8 @@ export default function End(): JSX.Element {
   ]);
 
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: 'sm' }}
-      padding="md"
-    >
-      <AppShell.Header>
-        <Group h="100%" px="md" justify="space-between">
-          RubaVision
-          <Button onClick={() => history.push('/play')}>PLAY</Button>
-        </Group>
-      </AppShell.Header>
-      <AppShell.Navbar p="md">
-        <AppShell.Footer p="md">
-          <ActionIcon
-            variant="filled"
-            aria-label="Settings"
-            onClick={() => history.push('/settings')}
-          >
-            <IconAdjustments
-              style={{ width: '70%', height: '70%' }}
-              stroke={1.5}
-            />
-          </ActionIcon>
-        </AppShell.Footer>
-      </AppShell.Navbar>
+    <AppShell header={{ height: 60 }} padding="md">
+      <RVHeader />
       <AppShell.Main>
         <Container>
           <Center>
@@ -142,6 +118,7 @@ export default function End(): JSX.Element {
           </Center>
         </Container>
       </AppShell.Main>
+      <RVFooter />
     </AppShell>
   );
 }
