@@ -17,78 +17,78 @@ import About from './screens/About';
 import TermsOfService from './screens/TermsOfService';
 
 function App(): JSX.Element {
-  return (
-    <Router basename={process.env.PUBLIC_URL}>
-      <MantineProvider>
-        <Suspense fallback={<Loader />}>
-          <Switch>
-            <Route exact path="/">
-              {/* I could never get a component to render in prod at "/" */}
-            </Route>
-            <Route path="/about">
-              <RVErrorBoundary>
-                <About />
-              </RVErrorBoundary>
-            </Route>
-            <Route path="/terms-of-service">
-              <RVErrorBoundary>
-                <TermsOfService />
-              </RVErrorBoundary>
-            </Route>
+	return (
+		<Router basename={process.env.PUBLIC_URL}>
+			<MantineProvider>
+				<Suspense fallback={<Loader />}>
+					<Switch>
+						<Route exact path="/">
+							{/* I could never get a component to render in prod at "/" */}
+						</Route>
+						<Route path="/about">
+							<RVErrorBoundary>
+								<About />
+							</RVErrorBoundary>
+						</Route>
+						<Route path="/terms-of-service">
+							<RVErrorBoundary>
+								<TermsOfService />
+							</RVErrorBoundary>
+						</Route>
 
-            <Route path="/reset-password">
-              <RVErrorBoundary>
-                <ResetPassword />
-              </RVErrorBoundary>
-            </Route>
-            <Route path="/login">
-              <RVErrorBoundary>
-                <Login />
-              </RVErrorBoundary>
-            </Route>
-            <Route path="/register">
-              <RVErrorBoundary>
-                <Register />
-              </RVErrorBoundary>
-            </Route>
-            <PrivateRoute
-              path="/start"
-              element={
-                <RVErrorBoundary>
-                  <Start />
-                </RVErrorBoundary>
-              }
-            ></PrivateRoute>
-            <PrivateRoute
-              path="/play"
-              element={
-                <RVErrorBoundary>
-                  <Canvas />
-                </RVErrorBoundary>
-              }
-            ></PrivateRoute>
-            <PrivateRoute
-              path="/end"
-              element={
-                <RVErrorBoundary>
-                  <End />
-                </RVErrorBoundary>
-              }
-            ></PrivateRoute>
-            <PrivateRoute
-              path="/settings"
-              element={
-                <RVErrorBoundary>
-                  <Settings />
-                </RVErrorBoundary>
-              }
-            ></PrivateRoute>
-            <Route path="*" component={PageNotFound} />
-          </Switch>
-        </Suspense>
-      </MantineProvider>
-    </Router>
-  );
+						<Route path="/reset-password">
+							<RVErrorBoundary>
+								<ResetPassword />
+							</RVErrorBoundary>
+						</Route>
+						<Route path="/login">
+							<RVErrorBoundary>
+								<Login />
+							</RVErrorBoundary>
+						</Route>
+						<Route path="/register">
+							<RVErrorBoundary>
+								<Register />
+							</RVErrorBoundary>
+						</Route>
+						<PrivateRoute
+							path="/start"
+							element={
+								<RVErrorBoundary>
+									<Start />
+								</RVErrorBoundary>
+							}
+						></PrivateRoute>
+						<PrivateRoute
+							path="/play"
+							element={
+								<RVErrorBoundary>
+									<Canvas />
+								</RVErrorBoundary>
+							}
+						></PrivateRoute>
+						<PrivateRoute
+							path="/end"
+							element={
+								<RVErrorBoundary>
+									<End />
+								</RVErrorBoundary>
+							}
+						></PrivateRoute>
+						<PrivateRoute
+							path="/settings"
+							element={
+								<RVErrorBoundary>
+									<Settings />
+								</RVErrorBoundary>
+							}
+						></PrivateRoute>
+						<Route path="*" component={PageNotFound} />
+					</Switch>
+				</Suspense>
+			</MantineProvider>
+		</Router>
+	);
 }
 
 export default App;
