@@ -10,6 +10,8 @@ import {
   Button,
   NumberInput,
   Select,
+  AppShell,
+  ActionIcon,
 } from '@mantine/core';
 import React from 'react';
 import { useLocalStorage } from '@mantine/hooks';
@@ -23,6 +25,7 @@ import Position from '../types/Position';
 import { v4 as uuidv4 } from 'uuid';
 import GameMode from '../types/GameMode';
 import formatGameMode from '../formatters/formatGameMode';
+import { IconAdjustments } from '@tabler/icons-react';
 
 function CoordinateBox() {
   const width = window.innerWidth / 5;
@@ -196,85 +199,116 @@ export default function Settings(): JSX.Element {
   const history = useHistory();
 
   return (
-    <Container>
-      <Center>
-        <Flex direction="column">
-          <Text size="xl">Settings</Text>
-          <Text size="md">Changes are automatically saved</Text>
-
-          <Space h="xl" />
-
-          <Text size="lg">Rounds</Text>
-          <Text size="md" fs="italic">
-            The number of guesses per game (between 1 to 1000)
-          </Text>
-          <NumberInput
-            placeholder="10"
-            min={1}
-            max={1000}
-            value={numberOfRounds}
-            onChange={(v) => setNumberOfRounds(v as number)}
-          />
-
-          <Space h="xl" />
-
-          <Text size="lg">Round length</Text>
-          <Text size="md" fs="italic">
-            The amount of time per each round in seconds.
-          </Text>
-          <Slider
-            min={1}
-            max={5}
-            defaultValue={5}
-            label={roundLength}
-            value={roundLength}
-            onChange={(value) => setRoundLength(value)}
-            marks={[
-              { value: 1, label: '1' },
-              { value: 3, label: '3' },
-              { value: 5, label: '5' },
-            ]}
-          />
-
-          <Space h="xl" />
-
-          <Text size="lg">Target position</Text>
-
-          <CoordinateBox />
-
-          <Space h="xl" />
-
-          <Text size="lg">Game modes</Text>
-          <Select
-            label={formatGameMode(
-              currentGameMode ?? GameMode.MOTION,
-              'description'
-            )}
-            placeholder={formatGameMode(
-              currentGameMode ?? GameMode.MOTION,
-              'title'
-            )}
-            data={Object.keys(GameMode).map((mode) => ({
-              label: formatGameMode(mode as GameMode, 'title'),
-              value: mode,
-            }))}
-            onChange={(mode) => {
-              if (mode == null) return;
-              setCurrentGameMode(mode as GameMode);
-            }}
-          />
-
-          <Text>
-            {formatGameMode(currentGameMode ?? GameMode.MOTION, 'instructions')}
-          </Text>
-
-          <Space h="xl" />
-
-          <Button onClick={() => history.push('/play')} color="gray">
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{ width: 300, breakpoint: 'sm' }}
+      padding="md"
+    >
+      <AppShell.Header>
+        <Group h="100%" px="md" justify="space-between">
+          RubaVision
+          <Button onClick={() => history.push('/play')} color="blue">
             PLAY
           </Button>
-        </Flex>
-      </Center>
-    </Container>
+        </Group>
+      </AppShell.Header>
+
+      <AppShell.Navbar p="md">
+        <AppShell.Footer p="md">
+          <ActionIcon
+            variant="filled"
+            aria-label="Settings"
+            onClick={() => history.push('/settings')}
+          >
+            <IconAdjustments
+              style={{ width: '70%', height: '70%' }}
+              stroke={1.5}
+            />
+          </ActionIcon>
+        </AppShell.Footer>
+      </AppShell.Navbar>
+
+      <AppShell.Main>
+        <Center>
+          <Flex direction="column">
+            <Text size="xl">Settings</Text>
+            <Text size="md">Changes are automatically saved</Text>
+
+            <Space h="xl" />
+
+            <Text size="lg">Rounds</Text>
+            <Text size="md" fs="italic">
+              The number of guesses per game (between 1 to 1000)
+            </Text>
+            <NumberInput
+              placeholder="10"
+              min={1}
+              max={1000}
+              value={numberOfRounds}
+              onChange={(v) => setNumberOfRounds(v as number)}
+            />
+
+            <Space h="xl" />
+
+            <Text size="lg">Round length</Text>
+            <Text size="md" fs="italic">
+              The amount of time per each round in seconds.
+            </Text>
+            <Slider
+              min={1}
+              max={5}
+              defaultValue={5}
+              label={roundLength}
+              value={roundLength}
+              onChange={(value) => setRoundLength(value)}
+              marks={[
+                { value: 1, label: '1' },
+                { value: 3, label: '3' },
+                { value: 5, label: '5' },
+              ]}
+            />
+
+            <Space h="xl" />
+
+            <Text size="lg">Target position</Text>
+
+            <CoordinateBox />
+
+            <Space h="xl" />
+
+            <Text size="lg">Game modes</Text>
+            <Select
+              label={formatGameMode(
+                currentGameMode ?? GameMode.MOTION,
+                'description'
+              )}
+              placeholder={formatGameMode(
+                currentGameMode ?? GameMode.MOTION,
+                'title'
+              )}
+              data={Object.keys(GameMode).map((mode) => ({
+                label: formatGameMode(mode as GameMode, 'title'),
+                value: mode,
+              }))}
+              onChange={(mode) => {
+                if (mode == null) return;
+                setCurrentGameMode(mode as GameMode);
+              }}
+            />
+
+            <Text>
+              {formatGameMode(
+                currentGameMode ?? GameMode.MOTION,
+                'instructions'
+              )}
+            </Text>
+
+            <Space h="xl" />
+            <Space h="xl" />
+            <Space h="xl" />
+          </Flex>
+        </Center>
+      </AppShell.Main>
+    </AppShell>
   );
 }
