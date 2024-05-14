@@ -1,4 +1,4 @@
-import { AppShell, Center, Container, Text } from '@mantine/core';
+import { AppShell, Container, Text } from '@mantine/core';
 import React from 'react';
 import RVFooter from '../components/RVFooter';
 import RVHeader from '../components/RVHeader';

@@ -6,15 +6,14 @@ import { v4 as uuid } from 'uuid';
  *
  * @param rounds Game information
  */
-
 export default function storeResults(rounds: Round[]): Data {
-  const data: Data = {
-    timestamp: Date.now(),
-    id: uuid(),
-    rounds,
-  };
+	const data: Data = {
+		timestamp: Date.now(),
+		id: uuid(),
+		rounds
+	};
 
-  window.localStorage.setItem('data', JSON.stringify(data));
+	window.localStorage.setItem('data', JSON.stringify(data));
 
-  return data;
+	return data;
 }

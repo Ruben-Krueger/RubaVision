@@ -1,8 +1,7 @@
-import { AppShell, Text, Group } from '@mantine/core';
+import { AppShell, Group, Anchor } from '@mantine/core';
 import { IconSettings } from '@tabler/icons-react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Anchor } from '@mantine/core';
 
 export default function RVFooter() {
   const history = useHistory();
