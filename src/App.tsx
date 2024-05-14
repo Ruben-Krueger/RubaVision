@@ -14,6 +14,7 @@ import PrivateRoute from './PrivateRoute';
 import Register from './screens/Register';
 import ResetPassword from './screens/ResetPassword';
 import About from './screens/About';
+import TermsOfService from './screens/TermsOfService';
 
 function App(): JSX.Element {
   return (
@@ -27,6 +28,11 @@ function App(): JSX.Element {
             <Route path="/about">
               <RVErrorBoundary>
                 <About />
+              </RVErrorBoundary>
+            </Route>
+            <Route path="/terms-of-service">
+              <RVErrorBoundary>
+                <TermsOfService />
               </RVErrorBoundary>
             </Route>
 
