@@ -16,23 +16,23 @@ import Answer from '../types/Answer';
 import nullThrows from 'capital-t-null-throws';
 
 const KEYS_TO_ANSWER: { [key: number]: Answer } = {
-  // Left/right arrows
-  37: Direction.LEFT,
-  39: Direction.RIGHT,
+	// Left/right arrows
+	37: Direction.LEFT,
+	39: Direction.RIGHT,
 
-  // s,h
-  83: Emotion.SAD,
-  72: Emotion.HAPPY,
+	// s,h
+	83: Emotion.SAD,
+	72: Emotion.HAPPY,
 
-  // 1, 2, 3
-  49: Shape.CIRCLE,
-  50: Shape.SQUARE,
-  51: Shape.TRIANGLE,
+	// 1, 2, 3
+	49: Shape.CIRCLE,
+	50: Shape.SQUARE,
+	51: Shape.TRIANGLE,
 
-  // 4, 5, 6
-  52: Color.RED,
-  53: Color.GREEN,
-  54: Color.YELLOW,
+	// 4, 5, 6
+	52: Color.RED,
+	53: Color.GREEN,
+	54: Color.YELLOW
 };
 
 /** Get a random answer for a round.
@@ -41,24 +41,24 @@ const KEYS_TO_ANSWER: { [key: number]: Answer } = {
  * @returns A round answer
  */
 function getNextAnswer(gameMode: GameMode): Answer {
-  let options: Answer[] = [];
+	let options: Answer[] = [];
 
-  switch (gameMode) {
-    case GameMode.MOTION:
-      options = Object.values(Direction);
-      break;
-    case GameMode.EMOTION:
-      options = Object.values(Emotion);
-      break;
-    case GameMode.COLORS:
-      options = Object.values(Color);
-      break;
-    case GameMode.SHAPES:
-      options = Object.values(Shape);
-      break;
-  }
+	switch (gameMode) {
+		case GameMode.MOTION:
+			options = Object.values(Direction);
+			break;
+		case GameMode.EMOTION:
+			options = Object.values(Emotion);
+			break;
+		case GameMode.COLORS:
+			options = Object.values(Color);
+			break;
+		case GameMode.SHAPES:
+			options = Object.values(Shape);
+			break;
+	}
 
-  return nullThrows(_.sample(options));
+	return nullThrows(_.sample(options));
 }
 
 const correctSound = new Audio(correctBeep);
@@ -66,117 +66,117 @@ const wrongSound = new Audio(wrongBeep);
 const roundSound = new Audio(roundBeep);
 
 const sketch = (p5: P5) => {
-  const GAME_MODE: GameMode = getLocalStorage('game-mode', GameMode.MOTION);
+	const GAME_MODE: GameMode = getLocalStorage('game-mode', GameMode.MOTION);
 
-  // The time to guess the movement direction after a target is displayed
-  const ROUND_INTERVAL_MS = getLocalStorage('round-length', 1) * 1000;
+	// The time to guess the movement direction after a target is displayed
+	const ROUND_INTERVAL_MS = getLocalStorage('round-length', 1) * 1000;
 
-  const targetCenters = getLocalStorage('target-centers', [{ x: 100, y: 100 }]);
+	const targetCenters = getLocalStorage('target-centers', [{ x: 100, y: 100 }]);
 
-  const NUMBER_OF_ROUNDS = getLocalStorage('number-rounds', 5);
+	const NUMBER_OF_ROUNDS = getLocalStorage('number-rounds', 5);
 
-  let CURRENT_ROUND_INDEX = 0;
+	let CURRENT_ROUND_INDEX = 0;
 
-  const now = Date.now();
+	const now = Date.now();
 
-  let rounds: Round[] = [];
+	const rounds: Round[] = [];
 
-  // Initialize round information
-  for (let i = 0; i < NUMBER_OF_ROUNDS; i++) {
-    const answer = getNextAnswer(GAME_MODE);
+	// Initialize round information
+	for (let i = 0; i < NUMBER_OF_ROUNDS; i++) {
+		const answer = getNextAnswer(GAME_MODE);
 
-    const previousEnd = rounds[i - 1]?.endTimestamp ?? now;
+		const previousEnd = rounds[i - 1]?.endTimestamp ?? now;
 
-    rounds.push({
-      index: i,
-      startTimestamp: previousEnd,
-      endTimestamp: previousEnd + ROUND_INTERVAL_MS,
-      guess: null,
-      answer,
-      targetCenter: targetCenters[i % targetCenters.length], // this may be overwritten
-    });
-  }
+		rounds.push({
+			index: i,
+			startTimestamp: previousEnd,
+			endTimestamp: previousEnd + ROUND_INTERVAL_MS,
+			guess: null,
+			answer,
+			targetCenter: targetCenters[i % targetCenters.length] // this may be overwritten
+		});
+	}
 
-  const targets = new Targets(p5, GAME_MODE, targetCenters);
+	const targets = new Targets(p5, GAME_MODE, targetCenters);
 
-  p5.setup = () => {
-    p5.createCanvas(window.innerWidth, window.innerHeight);
-  };
+	p5.setup = () => {
+		p5.createCanvas(window.innerWidth, window.innerHeight);
+	};
 
-  p5.keyPressed = () => {
-    // Pause the game using "delete"
-    if (p5.keyCode === 8) {
-      p5.noLoop();
-      return;
-    }
+	p5.keyPressed = () => {
+		// Pause the game using "delete"
+		if (p5.keyCode === 8) {
+			p5.noLoop();
+			return;
+		}
 
-    // Resume the game using "backspace"
-    if (p5.keyCode === 13) {
-      p5.loop();
-    }
+		// Resume the game using "backspace"
+		if (p5.keyCode === 13) {
+			p5.loop();
+		}
 
-    // End the game using "q"
-    if (p5.keyCode === 81) {
-      storeResults(rounds);
-      window.location.href = '/end';
-    }
+		// End the game using "q"
+		if (p5.keyCode === 81) {
+			storeResults(rounds);
+			window.location.href = '/end';
+		}
 
-    const guess = KEYS_TO_ANSWER[p5.keyCode] ?? null;
+		const guess = KEYS_TO_ANSWER[p5.keyCode] ?? null;
 
-    const round = rounds[CURRENT_ROUND_INDEX];
+		const round = rounds[CURRENT_ROUND_INDEX];
 
-    // This overwrites previous guesses
-    round.guess = guess;
-    if (round.answer === guess) {
-      correctSound.play();
-    } else {
-      wrongSound.play();
-    }
-  };
+		// This overwrites previous guesses
+		round.guess = guess;
+		if (round.answer === guess) {
+			correctSound.play();
+		} else {
+			wrongSound.play();
+		}
+	};
 
-  p5.draw = () => {
-    p5.background(255);
-    drawFocusCircle();
+	p5.draw = () => {
+		p5.background(255);
+		drawFocusCircle();
 
-    // Play the starting sound
-    if (p5.frameCount === 1) {
-      roundSound.play();
-    }
+		// Play the starting sound
+		if (p5.frameCount === 1) {
+			roundSound.play();
+		}
 
-    const now = Date.now();
+		const now = Date.now();
 
-    // Game has ended
-    if (now >= rounds[rounds.length - 1].endTimestamp) {
-      p5.noLoop();
+		// Game has ended
+		if (now >= rounds[rounds.length - 1].endTimestamp) {
+			p5.noLoop();
 
-      storeResults(rounds);
+			storeResults(rounds);
 
-      window.location.href = '/end';
-    }
+			window.location.href = '/end';
+		}
 
-    const round = rounds[CURRENT_ROUND_INDEX];
+		const round = rounds[CURRENT_ROUND_INDEX];
 
-    // Next round
-    if (now >= round.endTimestamp) {
-      // Update the round
-      CURRENT_ROUND_INDEX = CURRENT_ROUND_INDEX + 1;
+		// Next round
+		if (now >= round.endTimestamp) {
+			// Update the round
+			CURRENT_ROUND_INDEX = CURRENT_ROUND_INDEX + 1;
 
-      targets.moveTargetLocation(CURRENT_ROUND_INDEX);
+			targets.moveTargetLocation(CURRENT_ROUND_INDEX);
 
-      roundSound.play();
-    } else {
-      targets.draw(round.answer);
+			roundSound.play();
+		} else {
+			targets.draw(round.answer);
 
-      targets.update(round.answer);
-    }
-  };
+			targets.update(round.answer);
+		}
+	};
 
-  function drawFocusCircle() {
-    const radius = 20;
-    p5.fill(51);
-    p5.circle(p5.windowWidth / 2, p5.windowHeight / 2 - radius / 2, radius);
-    p5.noFill();
-  }
+	function drawFocusCircle() {
+		const radius = 20;
+		p5.fill(51);
+		p5.circle(p5.windowWidth / 2, p5.windowHeight / 2 - radius / 2, radius);
+		p5.noFill();
+	}
 };
 
 export default sketch;

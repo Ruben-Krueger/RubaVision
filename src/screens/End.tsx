@@ -5,19 +5,16 @@ import {
   Center,
   Text,
   Table,
-  ActionIcon,
-  AppShell,
-  Group,
+  AppShell
 } from '@mantine/core';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Round from '../types/Round';
-import { IconAdjustments } from '@tabler/icons-react';
 import Data from '../types/Data';
 import nullThrows from 'capital-t-null-throws';
 import { DateTime } from 'luxon';
 import useLogger from '../util/useLogger';
-import _, { sum } from 'lodash';
+import _ from 'lodash';
 import RVHeader from '../components/RVHeader';
 import RVFooter from '../components/RVFooter';
 
@@ -71,7 +68,7 @@ export default function End(): JSX.Element {
 
   const results = _.groupBy(rounds, (r) => [
     r.targetCenter.x,
-    r.targetCenter.y,
+    r.targetCenter.y
   ]);
 
   return (
