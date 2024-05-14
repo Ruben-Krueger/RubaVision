@@ -8,11 +8,14 @@ import {
   Space,
   rem,
   Table,
+  ActionIcon,
+  AppShell,
+  Group,
 } from '@mantine/core';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Round from '../types/Round';
-import { IconCheck, IconCircleX } from '@tabler/icons-react';
+import { IconAdjustments, IconCheck, IconCircleX } from '@tabler/icons-react';
 import Data from '../types/Data';
 import nullThrows from 'capital-t-null-throws';
 import { DateTime } from 'luxon';
@@ -73,50 +76,72 @@ export default function End(): JSX.Element {
   ]);
 
   return (
-    <Container>
-      <Center>
-        <Flex gap="md" direction="column">
-          <Text size="lg">Round over</Text>
-          {rounds.length === 0 && (
-            <Text size="lg">Uh-oh! We couldn't load the previous game</Text>
-          )}
-          <Text size="md">Total score: {score} </Text>
-
-          <Table>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Coordinates</Table.Th>
-                <Table.Th>Result</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {Object.entries(results).map(([coordinates, rounds]) => (
-                <Table.Tr key={coordinates}>
-                  <Table.Td>{coordinates}</Table.Td>
-                  <RoundResult rounds={rounds} />
-                </Table.Tr>
-              ))}
-            </Table.Tbody>
-          </Table>
-
-          <Button onClick={() => history.push('/play')}>PLAY AGAIN</Button>
-
-          <Button onClick={() => history.push('/settings')} color="gray">
-            SETTINGS
-          </Button>
-
-          <Button
-            disabled={data == null}
-            onClick={() => {
-              logger.info({ eventName: 'download' });
-              downloadResults(nullThrows(data));
-            }}
-            color="gray"
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{ width: 300, breakpoint: 'sm' }}
+      padding="md"
+    >
+      <AppShell.Header>
+        <Group h="100%" px="md" justify="space-between">
+          RubaVision
+          <Button onClick={() => history.push('/play')}>PLAY</Button>
+        </Group>
+      </AppShell.Header>
+      <AppShell.Navbar p="md">
+        <AppShell.Footer p="md">
+          <ActionIcon
+            variant="filled"
+            aria-label="Settings"
+            onClick={() => history.push('/settings')}
           >
-            DOWNLOAD
-          </Button>
-        </Flex>
-      </Center>
-    </Container>
+            <IconAdjustments
+              style={{ width: '70%', height: '70%' }}
+              stroke={1.5}
+            />
+          </ActionIcon>
+        </AppShell.Footer>
+      </AppShell.Navbar>
+      <AppShell.Main>
+        <Container>
+          <Center>
+            <Flex gap="md" direction="column">
+              <Text size="lg">Round over</Text>
+              {rounds.length === 0 && (
+                <Text size="lg">Uh-oh! We couldn't load the previous game</Text>
+              )}
+              <Text size="md">Total score: {score} </Text>
+
+              <Table>
+                <Table.Thead>
+                  <Table.Tr>
+                    <Table.Th>Coordinates</Table.Th>
+                    <Table.Th>Result</Table.Th>
+                  </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
+                  {Object.entries(results).map(([coordinates, rounds]) => (
+                    <Table.Tr key={coordinates}>
+                      <Table.Td>{coordinates}</Table.Td>
+                      <RoundResult rounds={rounds} />
+                    </Table.Tr>
+                  ))}
+                </Table.Tbody>
+              </Table>
+
+              <Button
+                disabled={data == null}
+                onClick={() => {
+                  logger.info({ eventName: 'download' });
+                  downloadResults(nullThrows(data));
+                }}
+                color="gray"
+              >
+                DOWNLOAD
+              </Button>
+            </Flex>
+          </Center>
+        </Container>
+      </AppShell.Main>
+    </AppShell>
   );
 }

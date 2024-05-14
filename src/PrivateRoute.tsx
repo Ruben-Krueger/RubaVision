@@ -2,7 +2,6 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { User, getAuth, onAuthStateChanged } from 'firebase/auth';
 
-import { RouteProps } from 'react-router-dom';
 import { Center, Loader } from '@mantine/core';
 
 export default function PrivateRoute({
