@@ -1,22 +1,30 @@
-import { Button, Text, Container, AppShell, Group } from '@mantine/core';
-import { useHistory } from 'react-router-dom';
-import React from 'react';
+import { Container, AppShell } from '@mantine/core';
+import React, { useEffect, useState } from 'react';
 import RVFooter from '../components/RVFooter';
+import RVHeader from '../components/RVHeader';
+import Markdown from 'markdown-to-jsx';
+import terms from '../legal/terms-of-service.md';
 
-export default function Start() {
-	const history = useHistory();
+export default function TermsOfService() {
+	const [markdown, setMarkdown] = useState('');
+
+	useEffect(() => {
+		async function loadTermsOfService() {
+			const termsOfService = await fetch(terms);
+			const text = await termsOfService.text();
+			setMarkdown(text);
+		}
+
+		loadTermsOfService();
+	}, []);
 
 	return (
 		<AppShell header={{ height: 60 }} padding="md">
-			<AppShell.Header>
-				<Group h="100%" px="md" justify="space-between">
-					RubaVision
-					<Button onClick={() => history.push('/play')}>PLAY</Button>
-				</Group>
-			</AppShell.Header>
+			<RVHeader />
+
 			<AppShell.Main>
 				<Container>
-					<Text>Terms of Service</Text>
+					<Markdown>{markdown}</Markdown>
 				</Container>
 			</AppShell.Main>
 			<RVFooter />
