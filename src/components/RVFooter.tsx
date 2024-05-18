@@ -8,7 +8,9 @@ export default function RVFooter() {
 	return (
 		<AppShell.Footer p="md">
 			<Group h="100%" px="md">
-				<IconSettings onClick={() => history.push('/settings')} />
+				<Anchor c="black">
+					<IconSettings onClick={() => history.push('/settings')} />
+				</Anchor>
 				<Anchor href="/about" c="black">
 					About
 				</Anchor>

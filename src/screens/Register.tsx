@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 import {
 	TextInput,
@@ -11,9 +11,13 @@ import {
 	Anchor,
 	Stack,
 	Alert,
-	Container
+	Container,
+	Modal
 } from '@mantine/core';
 import { useHistory } from 'react-router-dom';
+import { useDisclosure } from '@mantine/hooks';
+import Markdown from 'markdown-to-jsx';
+import terms from '../legal/terms-of-service.md';
 
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
@@ -38,6 +42,10 @@ export default function Register(): JSX.Element {
 
 	const [registerError, setRegisterError] = useState<Error | null>(null);
 
+	const [opened, { open, close }] = useDisclosure(false);
+
+	const [markdown, setMarkdown] = useState('');
+
 	async function register() {
 		try {
 			await createUserWithEmailAndPassword(
@@ -48,13 +56,26 @@ export default function Register(): JSX.Element {
 
 			history.push('/start');
 		} catch (error) {
-			console.error(error);
 			setRegisterError(error as Error);
 		}
 	}
 
+	useEffect(() => {
+		async function loadTermsOfService() {
+			const termsOfService = await fetch(terms);
+			const text = await termsOfService.text();
+			setMarkdown(text);
+		}
+
+		loadTermsOfService();
+	}, []);
+
 	return (
 		<Container size="xs">
+			<Modal opened={opened} onClose={close} title="Terms of Service">
+				<Markdown>{markdown}</Markdown>
+			</Modal>
+
 			<Paper radius="md" p="xl" withBorder>
 				<Text size="lg" fw={500}>
 					Register
@@ -99,7 +120,14 @@ export default function Register(): JSX.Element {
 					/>
 
 					<Checkbox
-						label="I accept terms and conditions"
+						label={
+							<Text>
+								I accept the{' '}
+								<Anchor c="black" underline="always" onClick={open}>
+									terms of service
+								</Anchor>
+							</Text>
+						}
 						checked={form.values.terms}
 						onChange={(event) =>
 							form.setFieldValue('terms', event.currentTarget.checked)

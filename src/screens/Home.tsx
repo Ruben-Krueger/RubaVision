@@ -1,23 +1,23 @@
-import { AppShell, Container, Text } from '@mantine/core';
+import { Center, Text, Container, Flex, AppShell } from '@mantine/core';
 import React from 'react';
 import RVFooter from '../components/RVFooter';
 import RVHeader from '../components/RVHeader';
 
-export default function About() {
+export default function Home() {
 	return (
 		<AppShell header={{ height: 60 }} padding="md">
 			<RVHeader />
-
 			<AppShell.Main>
 				<Container>
-					<Text>About</Text>
-					<Text>
-						This is free, open-source software to promote research into cortical
-						visual impairement.
-					</Text>
+					<Center>
+						<Flex direction="column">
+							<Center>
+								<Text size="xl">Home</Text>
+							</Center>
+						</Flex>
+					</Center>
 				</Container>
 			</AppShell.Main>
-
 			<RVFooter />
 		</AppShell>
 	);

@@ -15,7 +15,6 @@ import {
 } from '@mantine/core';
 import React from 'react';
 import { useLocalStorage } from '@mantine/hooks';
-import { useHistory } from 'react-router-dom';
 
 import update from 'immutability-helper';
 
@@ -25,6 +24,7 @@ import { v4 as uuidv4 } from 'uuid';
 import GameMode from '../types/GameMode';
 import formatGameMode from '../formatters/formatGameMode';
 import RVFooter from '../components/RVFooter';
+import RVHeader from '../components/RVHeader';
 
 function CoordinateBox() {
 	const width = window.innerWidth / 5;
@@ -195,18 +195,9 @@ export default function Settings(): JSX.Element {
 		defaultValue: GameMode.MOTION
 	});
 
-	const history = useHistory();
-
 	return (
 		<AppShell header={{ height: 60 }} padding="md">
-			<AppShell.Header>
-				<Group h="100%" px="md" justify="space-between">
-					RubaVision
-					<Button onClick={() => history.push('/play')} color="blue">
-						PLAY
-					</Button>
-				</Group>
-			</AppShell.Header>
+			<RVHeader />
 
 			<AppShell.Main>
 				<Center>
