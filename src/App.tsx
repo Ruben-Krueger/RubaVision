@@ -16,6 +16,7 @@ import ResetPassword from './screens/ResetPassword';
 import About from './screens/About';
 import TermsOfService from './screens/TermsOfService';
 import Home from './screens/Home';
+import Profile from './screens/Profile';
 
 function App(): JSX.Element {
 	return (
@@ -23,23 +24,12 @@ function App(): JSX.Element {
 			<MantineProvider>
 				<Suspense fallback={<Loader />}>
 					<Switch>
+						{/* Public routes */}
 						<Route exact path="/">
-							{/* I could never get a component to render in prod at "/" */}
 							<RVErrorBoundary>
 								<Home />
 							</RVErrorBoundary>
 						</Route>
-						<Route path="/about">
-							<RVErrorBoundary>
-								<About />
-							</RVErrorBoundary>
-						</Route>
-						<Route path="/terms-of-service">
-							<RVErrorBoundary>
-								<TermsOfService />
-							</RVErrorBoundary>
-						</Route>
-
 						<Route path="/reset-password">
 							<RVErrorBoundary>
 								<ResetPassword />
@@ -55,6 +45,33 @@ function App(): JSX.Element {
 								<Register />
 							</RVErrorBoundary>
 						</Route>
+						{/* Protected routes (only accessible if logged in) */}
+						<PrivateRoute
+							path="/about"
+							element={
+								<RVErrorBoundary>
+									<About />
+								</RVErrorBoundary>
+							}
+						></PrivateRoute>
+						<PrivateRoute
+							path="/terms-of-service"
+							element={
+								<RVErrorBoundary>
+									<TermsOfService />
+								</RVErrorBoundary>
+							}
+						></PrivateRoute>
+
+						<PrivateRoute
+							path="/profile"
+							element={
+								<RVErrorBoundary>
+									<Profile />
+								</RVErrorBoundary>
+							}
+						></PrivateRoute>
+
 						<PrivateRoute
 							path="/start"
 							element={
